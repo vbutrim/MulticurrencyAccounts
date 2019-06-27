@@ -44,7 +44,7 @@ public class DBService {
         return configuration;
     }
 
-    public ClientsDataSet getClient(String name) throws DBException {
+    ClientsDataSet getClient(String name) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             ClientsDao dao = new ClientsDao(session);
@@ -62,7 +62,7 @@ public class DBService {
         }
     }
 
-    public long registerClient(String name, String passportId) throws DBException {
+    long registerClient(String name, String passportId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();

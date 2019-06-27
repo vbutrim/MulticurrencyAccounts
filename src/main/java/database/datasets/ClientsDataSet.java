@@ -25,11 +25,11 @@ public class ClientsDataSet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", unique = true, updatable = false)
+    @Column(name = "name", unique = true)
     @NonNull
     private String name;
 
-    @Column(name = "passportId", updatable = false)
+    @Column(name = "passportId")
     @NonNull
     private String passportId;
 }

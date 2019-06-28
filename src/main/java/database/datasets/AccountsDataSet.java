@@ -32,5 +32,8 @@ public class AccountsDataSet implements Serializable {
     @NonNull
     private String currency;
 
-    // TODO: one to many with clients table
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id", nullable = false)
+    @NonNull
+    private ClientsDataSet client;
 }

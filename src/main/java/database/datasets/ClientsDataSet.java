@@ -1,18 +1,19 @@
 package database.datasets;
 
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.NonNull;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "clients")
@@ -32,4 +33,13 @@ public class ClientsDataSet implements Serializable {
     @Column(name = "passportId")
     @NonNull
     private String passportId;
+
+    @OneToMany(
+            mappedBy = "client",
+            fetch = FetchType.EAGER
+    )
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 30)
+    @Expose
+    private List<AccountsDataSet> accounts = new ArrayList<>();
 }

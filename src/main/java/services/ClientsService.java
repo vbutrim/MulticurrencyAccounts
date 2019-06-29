@@ -3,7 +3,9 @@ package services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import database.DBException;
-import database.datasets.ClientsDataSet;
+import storage.BankStorage;
+import storage.data.Client;
+import storage.helpers.Currency;
 
 import java.util.List;
 
@@ -11,46 +13,23 @@ import java.util.List;
 public class ClientsService {
 
     private final DBService dbService;
+    private final BankStorage bankStorage;
 
     @Inject
-    public ClientsService(DBService dbService) {
+    public ClientsService(DBService dbService, BankStorage bankStorage) {
         this.dbService = dbService;
+        this.bankStorage = bankStorage;
     }
 
-    public Long registerNewClient(String name, String passportId) throws DBException {
-        try {
-            if (getExistingClientByName(name) != null) {
-                return null;
-            }
-            return dbService.registerClient(name, passportId);
-        } catch (DBException e) {
-            throw new DBException(e);
-        }
+    public long registerNewClient(String name, String passportId, Currency ccy) {
+        return this.bankStorage.registerNewClient(name, passportId, ccy);
     }
 
-    public List<ClientsDataSet> getAllClients() throws DBException {
-        try {
-            return dbService.getAllClients();
-        } catch (DBException e) {
-            throw new DBException(e);
-        }
+    public List<Client> getAllClients() throws DBException {
+        return this.bankStorage.getAllClients();
     }
 
-    public ClientsDataSet getExistingClientById(Long clientId) {
-        try {
-            return dbService.getClientById(clientId);
-        } catch (DBException e) {
-            //
-            return null;
-        }
-    }
-
-    public ClientsDataSet getExistingClientByName(String name) {
-        try {
-            return dbService.getClientByName(name);
-        } catch (DBException e) {
-            //
-            return null;
-        }
+    public Client getExistingClientById(Long clientId) {
+        return this.bankStorage.getClientById(clientId);
     }
 }

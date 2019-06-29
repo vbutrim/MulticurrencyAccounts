@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import database.DBException;
 import database.datasets.ClientsDataSet;
 import services.ClientsService;
+import storage.data.Client;
+import storage.helpers.Currency;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +37,7 @@ public class ClientsController {
      */
     @GET
     public Response doGet(){
-        List<ClientsDataSet> clientObj = null;
+        List<Client> clientObj = null;
         try {
             clientObj = clientsService.getAllClients();
         } catch (DBException e) {
@@ -66,7 +68,7 @@ public class ClientsController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        ClientsDataSet clientObj = clientsService.getExistingClientById(clientId);
+        Client clientObj = clientsService.getExistingClientById(clientId);
 
         if (clientObj == null) {
             return Response
@@ -94,14 +96,7 @@ public class ClientsController {
 
         Long id = null;
 
-        try {
-            id = clientsService.registerNewClient(name, passportId);
-        } catch (DBException e) {
-            return Response
-                    .status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Couldn't perform Query. Try later")
-                    .build();
-        }
+        id = clientsService.registerNewClient(name, passportId, Currency.EUR);
 
         if (id == null) {
             return Response

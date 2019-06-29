@@ -3,6 +3,8 @@ package storage;
 import com.google.inject.Singleton;
 import storage.data.Account;
 import storage.data.Client;
+import storage.exceptions.AccountNotFoundException;
+import storage.exceptions.AccountWithSuchCcyAlreadyExistsException;
 import storage.exceptions.ClientAlreadyExistsException;
 import helpers.Currency;
 import storage.exceptions.ClientNotFoundException;
@@ -23,6 +25,10 @@ public final class BankStorageImpl implements BankStorage {
     public BankStorageImpl() {
 
     }
+
+    /*
+     * Clients features
+     */
 
     @Override
     public long registerNewClient(String name, String passportId, Currency ccyOfInitialAccount) {
@@ -51,12 +57,67 @@ public final class BankStorageImpl implements BankStorage {
             throw new ClientNotFoundException(id);
         }
 
-        Client foundedClient = clientsDatabase.getOrDefault(clientNamePerId.get(id), null);
+        Client foundClient = clientsDatabase.getOrDefault(clientNamePerId.get(id), null);
 
-        if (foundedClient == null) {
+        if (foundClient == null) {
             throw new ClientNotFoundException(id);
         }
 
-        return foundedClient;
+        return foundClient;
+    }
+
+    /*
+     * Accounts features
+     */
+
+    @Override
+    public long createAccountForClient(String name, Currency ccy) {
+        Client client = clientsDatabase.getOrDefault(name, null);
+
+        if (client == null) {
+            throw new ClientNotFoundException(name);
+        }
+
+        if (client.getOpenedAccounts().containsKey(ccy)) {
+            throw new AccountWithSuchCcyAlreadyExistsException(name, ccy);
+        }
+
+        Account newAccount = new Account(ccy);
+        client.addAccount(ccy, newAccount.getId());
+        accountsDatabase.put(newAccount.getId(), newAccount);
+
+        return newAccount.getId();
+    }
+
+    @Override
+    public void withdrawCashFromAccountOfClient(String name, Currency ccy, long cash) {
+        getAccountOfClient(name, ccy).withdraw(cash);
+    }
+
+    @Override
+    public void topUpAccountBalanceOfClient(String name, Currency ccy, long amount) {
+        getAccountOfClient(name, ccy).topUp(amount);
+    }
+
+    private Account getAccountOfClient(String name, Currency ccy) {
+        Client client = clientsDatabase.getOrDefault(name, null);
+
+        if (client == null) {
+            throw new ClientNotFoundException(name);
+        }
+
+        Long accountId = client.getOpenedAccounts().getOrDefault(ccy, null);
+
+        if (accountId == null) {
+            throw new AccountNotFoundException(name, ccy);
+        }
+
+        Account foundAccount = accountsDatabase.getOrDefault(accountId, null);
+
+        if (foundAccount == null) {
+            throw new AccountNotFoundException(accountId);
+        }
+
+        return foundAccount;
     }
 }

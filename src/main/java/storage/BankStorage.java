@@ -12,4 +12,10 @@ public interface BankStorage {
     List<Client> getAllClients();
 
     Client getClientById(Long id);
+
+    long createAccountForClient(String name, Currency ccy);
+
+    void withdrawCashFromAccountOfClient(String name, Currency ccy, long cash);
+
+    void topUpAccountBalanceOfClient(String name, Currency ccy, long amount);
 }

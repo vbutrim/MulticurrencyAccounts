@@ -9,13 +9,15 @@ import storage.exceptions.AccountWithSuchCcyAlreadyExistsException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
 public final class Client {
 
+    @Getter
     private long id;
 
+    @Getter
     private String name;
 
+    @Getter
     private String passportId;
 
     private Map<Currency, Long> accountIdPerCcy = new HashMap<>();
@@ -36,5 +38,9 @@ public final class Client {
             throw new AccountWithSuchCcyAlreadyExistsException(id, ccy);
         }
         accountIdPerCcy.put(ccy, accountId);
+    }
+
+    public Map<Currency, Long> getOpenedAccounts() {
+        return accountIdPerCcy;
     }
 }

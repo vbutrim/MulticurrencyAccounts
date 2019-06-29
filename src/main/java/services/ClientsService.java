@@ -5,19 +5,17 @@ import com.google.inject.Singleton;
 import database.DBException;
 import storage.BankStorage;
 import storage.data.Client;
-import storage.helpers.Currency;
+import helpers.Currency;
 
 import java.util.List;
 
 @Singleton
 public class ClientsService {
 
-    private final DBService dbService;
     private final BankStorage bankStorage;
 
     @Inject
-    public ClientsService(DBService dbService, BankStorage bankStorage) {
-        this.dbService = dbService;
+    public ClientsService(BankStorage bankStorage) {
         this.bankStorage = bankStorage;
     }
 

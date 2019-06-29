@@ -3,7 +3,7 @@ package main;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import controllers.ClientsController;
-import injector.InjectingModule;
+import helpers.InjectingModule;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.grizzly.http.server.HttpServer;

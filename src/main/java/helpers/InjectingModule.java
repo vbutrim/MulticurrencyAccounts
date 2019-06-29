@@ -1,4 +1,4 @@
-package injector;
+package helpers;
 
 import com.google.inject.AbstractModule;
 import storage.BankStorage;

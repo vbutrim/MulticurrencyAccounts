@@ -2,8 +2,8 @@ package storage.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import storage.helpers.Currency;
-import storage.helpers.GlobalIds;
+import helpers.Currency;
+import helpers.GlobalIds;
 import storage.exceptions.AccountWithSuchCcyAlreadyExistsException;
 
 import java.util.HashMap;

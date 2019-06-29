@@ -1,4 +1,4 @@
-package storage.helpers;
+package helpers;
 
 import java.util.concurrent.atomic.AtomicLong;
 

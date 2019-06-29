@@ -3,7 +3,7 @@ package storage.data;
 import lombok.Getter;
 import lombok.ToString;
 import storage.exceptions.NotEnoughMoneyException;
-import storage.helpers.Currency;
+import helpers.Currency;
 
 @Getter
 @ToString

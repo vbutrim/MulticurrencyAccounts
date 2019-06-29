@@ -4,7 +4,7 @@ import com.google.inject.Singleton;
 import storage.data.Account;
 import storage.data.Client;
 import storage.exceptions.ClientAlreadyExistsException;
-import storage.helpers.Currency;
+import helpers.Currency;
 import storage.exceptions.ClientNotFoundException;
 
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import database.DBException;
 import database.datasets.ClientsDataSet;
 import services.ClientsService;
 import storage.data.Client;
-import storage.helpers.Currency;
+import helpers.Currency;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

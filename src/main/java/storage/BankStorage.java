@@ -1,7 +1,7 @@
 package storage;
 
 import storage.data.Client;
-import storage.helpers.Currency;
+import helpers.Currency;
 
 import java.util.List;
 

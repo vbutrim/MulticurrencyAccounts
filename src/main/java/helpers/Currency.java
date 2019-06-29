@@ -1,4 +1,4 @@
-package storage.helpers;
+package helpers;
 
 public enum Currency {
     USD("USD"),

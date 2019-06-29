@@ -15,8 +15,8 @@ import java.util.Map;
 @Singleton
 public final class BankStorageImpl implements BankStorage {
 
-    private final Map<Long, Client> clientsDatabase = new HashMap<>();
-    private final Map<String, Long> clientIdPerName = new HashMap<>();
+    private final Map<String, Client> clientsDatabase = new HashMap<>();
+    private final Map<Long, String> clientNamePerId = new HashMap<>();
 
     private final Map<Long, Account> accountsDatabase = new HashMap<>();
 
@@ -26,7 +26,7 @@ public final class BankStorageImpl implements BankStorage {
 
     @Override
     public long registerNewClient(String name, String passportId, Currency ccyOfInitialAccount) {
-        if (clientIdPerName.containsKey(name)) {
+        if (clientsDatabase.containsKey(name)) {
             throw new ClientAlreadyExistsException(name);
         }
 
@@ -34,8 +34,8 @@ public final class BankStorageImpl implements BankStorage {
         Client newClient = new Client(name, passportId, ccyOfInitialAccount, accountForNewClient.getId());
 
         accountsDatabase.put(accountForNewClient.getId(), accountForNewClient);
-        clientsDatabase.put(newClient.getId(), newClient);
-        clientIdPerName.put(name, newClient.getId());
+        clientsDatabase.put(name, newClient);
+        clientNamePerId.put(newClient.getId(), name);
 
         return newClient.getId();
     }
@@ -47,9 +47,16 @@ public final class BankStorageImpl implements BankStorage {
 
     @Override
     public Client getClientById(Long id) throws ClientNotFoundException {
-        if (id == null || !clientsDatabase.containsKey(id)) {
+        if (id == null || !clientNamePerId.containsKey(id)) {
             throw new ClientNotFoundException(id);
         }
-        return clientsDatabase.get(id);
+
+        Client foundedClient = clientsDatabase.getOrDefault(clientNamePerId.get(id), null);
+
+        if (foundedClient == null) {
+            throw new ClientNotFoundException(id);
+        }
+
+        return foundedClient;
     }
 }

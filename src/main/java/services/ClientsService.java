@@ -2,10 +2,9 @@ package services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import database.DBException;
+import helpers.Currency;
 import storage.BankStorage;
 import storage.data.Client;
-import helpers.Currency;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class ClientsService {
         return this.bankStorage.registerNewClient(name, passportId, ccy);
     }
 
-    public List<Client> getAllClients() throws DBException {
+    public List<Client> getAllClients() {
         return this.bankStorage.getAllClients();
     }
 

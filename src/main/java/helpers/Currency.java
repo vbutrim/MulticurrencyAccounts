@@ -6,10 +6,25 @@ public enum Currency {
     GBP("GBP"),
     RUB("RUB");
 
+    public final static Currency DEFAULT_VALUE = Currency.EUR;
+
     private final String text;
 
     Currency(String text) {
         this.text = text;
+    }
+
+    public static boolean contains(String text) {
+        if (text == null || text.isEmpty()) {
+            return false;
+        }
+
+        try {
+            valueOf(text);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @Override

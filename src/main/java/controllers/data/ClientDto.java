@@ -2,7 +2,6 @@ package controllers.data;
 
 import lombok.Data;
 
-@Data
 public class ClientDto {
     private long id;
 

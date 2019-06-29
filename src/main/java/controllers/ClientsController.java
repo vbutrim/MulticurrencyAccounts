@@ -1,15 +1,10 @@
 package controllers;
 
 import com.google.gson.Gson;
-import database.DBException;
-import database.datasets.ClientsDataSet;
+import helpers.Currency;
 import services.ClientsService;
 import storage.data.Client;
-import helpers.Currency;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -18,15 +13,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.List;
 
 @Path("/clients")
 @Produces(MediaType.APPLICATION_JSON)
 public class ClientsController {
+    
     private static final String CLIENT_IT_ENTRY_POINT = "id";
 
     private final ClientsService clientsService;
+    private final Gson gson = new Gson();
 
     public ClientsController(ClientsService clientsService) {
         this.clientsService = clientsService;
@@ -37,14 +33,7 @@ public class ClientsController {
      */
     @GET
     public Response doGet(){
-        List<Client> clientObj = null;
-        try {
-            clientObj = clientsService.getAllClients();
-        } catch (DBException e) {
-            return Response
-                    .status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .build();
-        }
+        List<Client> clientObj = clientsService.getAllClients();
 
         if (clientObj == null || clientObj.isEmpty()) {
             return Response
@@ -53,7 +42,6 @@ public class ClientsController {
                     .build();
         }
 
-        Gson gson = new Gson();
         String json = gson.toJson(clientObj);
         return Response.ok(json).build();
     }
@@ -77,7 +65,6 @@ public class ClientsController {
                     .build();
         }
 
-        Gson gson = new Gson();
         String json = gson.toJson(clientObj);
         return Response.ok(json).build();
     }
@@ -86,41 +73,20 @@ public class ClientsController {
      * Register new Client and Account for it
      */
     @POST
-    public Response doPost(@QueryParam("name") String name, @QueryParam("passportId") String passportId) {
-/*        String name = request.getName();
-        String passportId = request.getPassportId();*/
+    public Response doPost(@QueryParam("name") String name, @QueryParam("passportId") String passportId, @QueryParam("ccyOfInitialAccount") String ccyOfInitialAccount) {
 
         if (name == null || passportId == null || name.isEmpty() || passportId.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        Long id = null;
+        long id;
 
-        id = clientsService.registerNewClient(name, passportId, Currency.EUR);
-
-        if (id == null) {
-            return Response
-                    .status(Response.Status.CONFLICT)
-                    .entity("Client with the same Name already exists")
-                    .build();
+        if (ccyOfInitialAccount == null || ccyOfInitialAccount.isEmpty() || !Currency.contains(ccyOfInitialAccount)) {
+            id = clientsService.registerNewClient(name, passportId, Currency.DEFAULT_VALUE);
+        } else {
+            id = clientsService.registerNewClient(name, passportId, Currency.valueOf(ccyOfInitialAccount));
         }
-        /*Gson gson = new Gson();
-        String json = gson.toJson(profile);*/
 
-        return Response
-                .ok(String.format("Client with id %s was created", id)).build();
-
-    }
-
-    /*
-     * Add account or whatever
-     */
-    public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    }
-
-    /*
-     * Delete Client from the server and its accounts
-     */
-    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        return Response.ok(gson.toJson(String.format("Client with id '%s' and account were successfully created", id))).build();
     }
 }

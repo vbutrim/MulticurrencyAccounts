@@ -3,6 +3,7 @@ package services;
 import com.google.inject.Singleton;
 import database.DBException;
 import database.daos.ClientsDao;
+import database.datasets.AccountsDataSet;
 import database.datasets.ClientsDataSet;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -15,6 +16,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @Singleton
 public class DBService {
@@ -33,6 +35,7 @@ public class DBService {
     private Configuration getH2Configuration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(ClientsDataSet.class);
+        configuration.addAnnotatedClass(AccountsDataSet.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
@@ -44,17 +47,51 @@ public class DBService {
         return configuration;
     }
 
-    ClientsDataSet getClient(String name) throws DBException {
+    ClientsDataSet getClientByName(String clientName) throws DBException {
+        if (clientName == null || clientName.isEmpty()) {
+            System.out.println(String.format("[1] Failed getClientByName by Name %s", clientName));
+            return null;
+        }
+
         try {
             Session session = sessionFactory.openSession();
             ClientsDao dao = new ClientsDao(session);
-            Long l = dao.getClientId(name);
+            Long l = dao.getClientId(clientName);
             if (l == null) {
+                System.out.println(String.format("[2] Failed getClientByName by Name %s", clientName));
                 session.close();
-                System.out.println(String.format("FAILED getUser by Name %s", name));
                 return null;
             }
-            ClientsDataSet dataSet = dao.get(l);
+
+            session.close();
+            return getClientById(l);
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    ClientsDataSet getClientById(Long clientId) throws DBException {
+        if (clientId == null) {
+            System.out.println(String.format("Failed getClientById by Id %s", clientId));
+            return null;
+        }
+
+        try {
+            Session session = sessionFactory.openSession();
+            ClientsDao dao = new ClientsDao(session);
+            ClientsDataSet dataSet = dao.get(clientId);
+            session.close();
+            return dataSet;
+        } catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    List<ClientsDataSet> getAllClients() throws DBException {
+        try {
+            Session session = sessionFactory.openSession();
+            ClientsDao dao = new ClientsDao(session);
+            List<ClientsDataSet> dataSet = dao.getAll();
             session.close();
             return dataSet;
         } catch (HibernateException e) {

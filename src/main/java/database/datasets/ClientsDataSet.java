@@ -1,19 +1,17 @@
 package database.datasets;
 
-import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.NonNull;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "clients")
@@ -40,6 +38,5 @@ public class ClientsDataSet implements Serializable {
     )
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
-    @Expose
     private List<AccountsDataSet> accounts = new ArrayList<>();
 }

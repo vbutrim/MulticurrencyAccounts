@@ -6,11 +6,24 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientsDao {
     private Session session;
 
     public ClientsDao(Session session) {
         this.session = session;
+    }
+
+    public List<ClientsDataSet> getAll() throws HibernateException {
+        Criteria cb = session.createCriteria(ClientsDataSet.class);
+        List<ClientsDataSet> result = new ArrayList<>();
+        List b =  cb.list();
+        for (Object o : b) {
+            result.add((ClientsDataSet) o);
+        }
+        return result;
     }
 
     public ClientsDataSet get(long id) throws HibernateException {

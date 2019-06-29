@@ -5,8 +5,11 @@ import com.google.inject.Singleton;
 import database.DBException;
 import database.datasets.ClientsDataSet;
 
+import java.util.List;
+
 @Singleton
 public class ClientsService {
+
     private final DBService dbService;
 
     @Inject
@@ -16,7 +19,7 @@ public class ClientsService {
 
     public Long registerNewClient(String name, String passportId) throws DBException {
         try {
-            if (getExistingClientId(name) != null) {
+            if (getExistingClientByName(name) != null) {
                 return null;
             }
             return dbService.registerClient(name, passportId);
@@ -25,9 +28,26 @@ public class ClientsService {
         }
     }
 
-    public ClientsDataSet getExistingClientId(String name) {
+    public List<ClientsDataSet> getAllClients() throws DBException {
         try {
-            return dbService.getClient(name);
+            return dbService.getAllClients();
+        } catch (DBException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public ClientsDataSet getExistingClientById(Long clientId) {
+        try {
+            return dbService.getClientById(clientId);
+        } catch (DBException e) {
+            //
+            return null;
+        }
+    }
+
+    public ClientsDataSet getExistingClientByName(String name) {
+        try {
+            return dbService.getClientByName(name);
         } catch (DBException e) {
             //
             return null;

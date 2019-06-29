@@ -22,8 +22,7 @@ public final class BankStorageImpl implements BankStorage {
 
     private final Map<Long, Account> accountsDatabase = new HashMap<>();
 
-    public BankStorageImpl() {
-
+    BankStorageImpl() {
     }
 
     /*
@@ -52,7 +51,7 @@ public final class BankStorageImpl implements BankStorage {
     }
 
     @Override
-    public Client getClientById(Long id) throws ClientNotFoundException {
+    public Client getClientById(Long id) {
         if (id == null || !clientNamePerId.containsKey(id)) {
             throw new ClientNotFoundException(id);
         }

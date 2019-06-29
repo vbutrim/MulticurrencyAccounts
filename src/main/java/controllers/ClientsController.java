@@ -13,13 +13,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/clients")
 @Produces(MediaType.APPLICATION_JSON)
 public final class ClientsController {
 
-    private static final String CLIENT_IT_ENTRY_POINT = "id";
+    private static final String CLIENT_ID_ENTRY_POINT = "id";
 
     private final ClientsService clientsService;
     private final Gson gson = new Gson();
@@ -33,16 +32,7 @@ public final class ClientsController {
      */
     @GET
     public Response doGet() {
-        List<Client> clientObj = clientsService.getAllClients();
-
-        if (clientObj == null || clientObj.isEmpty()) {
-            return Response
-                    .status(Response.Status.NO_CONTENT)
-                    .entity("No clients")
-                    .build();
-        }
-
-        String json = gson.toJson(clientObj);
+        String json = gson.toJson(clientsService.getAllClients());
         return Response.ok(json).build();
     }
 
@@ -50,22 +40,15 @@ public final class ClientsController {
      * Get Client information
      */
     @GET
-    @Path("/{" + CLIENT_IT_ENTRY_POINT + "}")
-    public Response doGet(@PathParam(CLIENT_IT_ENTRY_POINT) Long clientId) {
+    @Path("/{" + CLIENT_ID_ENTRY_POINT + "}")
+    public Response doGet(@PathParam(CLIENT_ID_ENTRY_POINT) Long clientId) {
         if (clientId == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        Client clientObj = clientsService.getExistingClientById(clientId);
+        Client foundClient = clientsService.getExistingClientById(clientId);
 
-        if (clientObj == null) {
-            return Response
-                    .status(Response.Status.NO_CONTENT)
-                    .entity(String.format("Client with id %s not found", clientId))
-                    .build();
-        }
-
-        String json = gson.toJson(clientObj);
+        String json = gson.toJson(foundClient);
         return Response.ok(json).build();
     }
 
@@ -74,7 +57,6 @@ public final class ClientsController {
      */
     @POST
     public Response doPost(@QueryParam("name") String name, @QueryParam("passportId") String passportId, @QueryParam("ccyOfInitialAccount") String ccyOfInitialAccount) {
-
         if (name == null || passportId == null || name.isEmpty() || passportId.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

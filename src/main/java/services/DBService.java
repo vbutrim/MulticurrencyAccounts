@@ -49,7 +49,7 @@ public class DBService {
 
     ClientsDataSet getClientByName(String clientName) throws DBException {
         if (clientName == null || clientName.isEmpty()) {
-            System.out.println(String.format("[1] Failed getClientByName by Name %s", clientName));
+            System.out.println(String.format("Failed getClientByName by Name %s. Client Name is Null or Empty", clientName));
             return null;
         }
 
@@ -58,7 +58,7 @@ public class DBService {
             ClientsDao dao = new ClientsDao(session);
             Long l = dao.getClientId(clientName);
             if (l == null) {
-                System.out.println(String.format("[2] Failed getClientByName by Name %s", clientName));
+                System.out.println(String.format("Client with Name %s not exist", clientName));
                 session.close();
                 return null;
             }

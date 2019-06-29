@@ -34,8 +34,9 @@ public class Main {
         System.out.println("Server started");
         server.join();
     }*/
-    private static final String BASE_URI = "http://localhost:";
+    private static final String BASE_SERVER = "http://localhost:";
     private static final String BASE_PORT = "8080";
+    private static final String BASE_API_URL = "/api/v1";
 
     private static final Injector injector = Guice.createInjector(new InjectingModule());
 
@@ -43,7 +44,7 @@ public class Main {
         // TODO: port
         //Injector injector = Guice.createInjector(new InjectingModule());
 
-        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI + BASE_PORT), getResourceConfig());
+        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_SERVER + BASE_PORT + BASE_API_URL), getResourceConfig());
         System.out.println("Server started");
 
         try {

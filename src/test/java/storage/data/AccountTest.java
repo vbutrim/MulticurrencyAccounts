@@ -1,15 +1,22 @@
 package storage.data;
 
 import helpers.Currency;
+import helpers.GlobalIds;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import storage.exceptions.AccountBalanceLimitationException;
 import storage.exceptions.AccountNotEnoughMoneyException;
 
 public class AccountTest {
 
+    @Before
+    public void beforeStart() {
+        GlobalIds.AccountIdentifier.set(100);
+    }
+
     @Test
-    public void shouldCreateAccountWithZeroBalance() {
+    public void shouldCreateAccountWithZeroBalanceAndCorrectId() {
         // Given
 
         // When
@@ -18,6 +25,8 @@ public class AccountTest {
         // Then
         Assert.assertEquals(0, account.getBalance());
         Assert.assertEquals(Currency.DEFAULT_VALUE, account.getCcy());
+        Assert.assertEquals(100, account.getId());
+        Assert.assertEquals(101, GlobalIds.AccountIdentifier.get());
     }
 
     @Test

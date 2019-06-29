@@ -10,8 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@Setter
-public class Client {
+public final class Client {
 
     private long id;
 

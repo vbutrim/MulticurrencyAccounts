@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Singleton
-public class BankStorageImpl implements BankStorage {
+public final class BankStorageImpl implements BankStorage {
 
     private final Map<Long, Client> clientsDatabase = new HashMap<>();
     private final Map<String, Long> clientIdPerName = new HashMap<>();

@@ -9,7 +9,7 @@ import storage.data.Client;
 import java.util.List;
 
 @Singleton
-public class ClientsService {
+public final class ClientsService {
 
     private final BankStorage bankStorage;
 

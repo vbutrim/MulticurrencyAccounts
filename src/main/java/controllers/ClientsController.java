@@ -17,8 +17,8 @@ import java.util.List;
 
 @Path("/clients")
 @Produces(MediaType.APPLICATION_JSON)
-public class ClientsController {
-    
+public final class ClientsController {
+
     private static final String CLIENT_IT_ENTRY_POINT = "id";
 
     private final ClientsService clientsService;
@@ -32,7 +32,7 @@ public class ClientsController {
      * Get all clients Names and Ids
      */
     @GET
-    public Response doGet(){
+    public Response doGet() {
         List<Client> clientObj = clientsService.getAllClients();
 
         if (clientObj == null || clientObj.isEmpty()) {
@@ -51,7 +51,7 @@ public class ClientsController {
      */
     @GET
     @Path("/{" + CLIENT_IT_ENTRY_POINT + "}")
-    public Response doGet(@PathParam(CLIENT_IT_ENTRY_POINT) Long clientId){
+    public Response doGet(@PathParam(CLIENT_IT_ENTRY_POINT) Long clientId) {
         if (clientId == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

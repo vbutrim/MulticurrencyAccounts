@@ -36,6 +36,16 @@ public final class TransactionsService {
         Account foundAccountFrom = clientsService.getAccountOfClient(nameOfFromClient, ccy);
         Account foundAccountTo = clientsService.getAccountOfClient(nameOfToClient, ccy);
 
+        /*
+         * To prevent deadlocks order it. Otherwise, if we have situation with mutual transactions
+         * (Client1 sends money Client2, Client2 sends money Client1)
+         *  --- Thread A ---
+         *                  ----> blocks first account
+         *                  ----> is waiting second account
+         *  --- Thread B ---
+         *                  ----> blocks second account
+         *                  ----> is waiting first account
+         */
         if (foundAccountFrom.getId() < foundAccountTo.getId()) {
             synchronized (foundAccountFrom) {
                 synchronized (foundAccountTo) {

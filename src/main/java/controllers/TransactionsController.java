@@ -35,6 +35,26 @@ public final class TransactionsController {
     }
 
     /*
+     * Transfer money from Client (nameFrom) to Client (nameTo)
+     * + Parameters: Currency (String), Amount of Money (Long)
+     */
+    @POST
+    public Response doPost(@QueryParam("clientNameFrom") String clientNameFrom,
+                           @QueryParam("clientNameTo") String clientNameTo,
+                           @QueryParam("currency") String currency,
+                           @QueryParam("amount") Long amountMoney) {
+        if (clientNameFrom == null || clientNameFrom.isEmpty() ||
+                clientNameTo == null || clientNameTo.isEmpty() ||
+                currency == null || currency.isEmpty() || !Currency.contains(currency) ||
+                amountMoney == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        this.transactionsService.transferMoneyFromTo(clientNameFrom, clientNameTo, Currency.valueOf(currency), amountMoney);
+        return Response.ok("SUCCESSFULLY TRANSFERED").build();
+    }
+
+    /*
      * Withdraw or Top Up Account's Balance (ClientName & Currency)
      * + Parameters: Action (Transfer
      */
@@ -65,19 +85,7 @@ public final class TransactionsController {
             }
         }
 
-        endActionDescription.append(String.format("%s %ss", amountMoney, currency));
+        endActionDescription.append(String.format(" %s %ss", amountMoney, currency));
         return Response.ok(gson.toJson(endActionDescription.toString())).build();
-    }
-
-    /*
-     * Transfer money from Client (nameFrom) to Client (nameTo)
-     * + Parameters: Currency (String), Amount of Money (Long)
-     */
-    @POST
-    public Response doPost(@QueryParam("clientNameFrom") String clientNameFrom,
-                           @QueryParam("clientNameTo") String clientNameTo,
-                           @QueryParam("currency") String currency,
-                           @QueryParam("amount") Long amountMoney) {
-        return Response.ok().build();
     }
 }

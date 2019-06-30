@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.gson.Gson;
 import helpers.AccountAction;
 import helpers.Currency;
 import services.TransactionsService;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Response;
 public final class TransactionsController {
 
     private final TransactionsService transactionsService;
+    private final Gson gson = new Gson();
 
     public TransactionsController(TransactionsService transactionsService) {
         this.transactionsService = transactionsService;
@@ -46,6 +48,7 @@ public final class TransactionsController {
                 amountMoney == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
+
 
         return Response.ok().build();
     }

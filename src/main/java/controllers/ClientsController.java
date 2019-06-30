@@ -56,7 +56,9 @@ public final class ClientsController {
      * Register new Client and Account for it
      */
     @POST
-    public Response doPost(@QueryParam("name") String name, @QueryParam("passportId") String passportId, @QueryParam("ccyOfInitialAccount") String ccyOfInitialAccount) {
+    public Response doPost(@QueryParam("name") String name,
+                           @QueryParam("passportId") String passportId,
+                           @QueryParam("ccyOfInitialAccount") String ccyOfInitialAccount) {
         if (name == null || passportId == null || name.isEmpty() || passportId.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -65,10 +67,11 @@ public final class ClientsController {
 
         if (ccyOfInitialAccount == null || ccyOfInitialAccount.isEmpty() || !Currency.contains(ccyOfInitialAccount)) {
             id = clientsService.registerNewClient(name, passportId, Currency.DEFAULT_VALUE);
+            ccyOfInitialAccount = Currency.DEFAULT_VALUE.toString();
         } else {
             id = clientsService.registerNewClient(name, passportId, Currency.valueOf(ccyOfInitialAccount));
         }
 
-        return Response.ok(gson.toJson(String.format("Client with id '%s' and account were successfully created", id))).build();
+        return Response.ok(gson.toJson(String.format("Client '%s' with id '%s' and '%s' account were successfully created", name, id, ccyOfInitialAccount))).build();
     }
 }

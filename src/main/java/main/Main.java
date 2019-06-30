@@ -8,7 +8,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import services.ClientsService;
+import services.ClientsAccountsService;
 
 import java.io.IOException;
 import java.net.URI;
@@ -39,7 +39,7 @@ public class Main {
 
     private static ResourceConfig getResourceConfig() {
         return new ResourceConfig()
-                .register(new ClientsController(injector.getInstance(ClientsService.class)))
+                .register(new ClientsController(injector.getInstance(ClientsAccountsService.class)))
 
                 .property(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, "true");
     }

@@ -23,7 +23,7 @@ public enum Currency {
             valueOf(text);
             return true;
         } catch (IllegalArgumentException e) {
-            return false;
+            throw new IncorrectCurrencyAsArgumentException(text);
         }
     }
 

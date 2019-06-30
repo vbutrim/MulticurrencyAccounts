@@ -2,7 +2,7 @@ package controllers;
 
 import com.google.gson.Gson;
 import helpers.Currency;
-import services.ClientsService;
+import services.ClientsAccountsService;
 import storage.data.Client;
 
 import javax.ws.rs.GET;
@@ -20,11 +20,11 @@ public final class ClientsController {
 
     private static final String CLIENT_ID_ENTRY_POINT = "id";
 
-    private final ClientsService clientsService;
+    private final ClientsAccountsService clientsAccountsService;
     private final Gson gson = new Gson();
 
-    public ClientsController(ClientsService clientsService) {
-        this.clientsService = clientsService;
+    public ClientsController(ClientsAccountsService clientsAccountsService) {
+        this.clientsAccountsService = clientsAccountsService;
     }
 
     /*
@@ -32,7 +32,7 @@ public final class ClientsController {
      */
     @GET
     public Response doGet() {
-        String json = gson.toJson(clientsService.getAllClients());
+        String json = gson.toJson(clientsAccountsService.getAllClients());
         return Response.ok(json).build();
     }
 
@@ -46,7 +46,7 @@ public final class ClientsController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        Client foundClient = clientsService.getExistingClientById(clientId);
+        Client foundClient = clientsAccountsService.getExistingClientById(clientId);
 
         String json = gson.toJson(foundClient);
         return Response.ok(json).build();
@@ -64,9 +64,9 @@ public final class ClientsController {
         long id;
 
         if (ccyOfInitialAccount == null || ccyOfInitialAccount.isEmpty() || !Currency.contains(ccyOfInitialAccount)) {
-            id = clientsService.registerNewClient(name, passportId, Currency.DEFAULT_VALUE);
+            id = clientsAccountsService.registerNewClient(name, passportId, Currency.DEFAULT_VALUE);
         } else {
-            id = clientsService.registerNewClient(name, passportId, Currency.valueOf(ccyOfInitialAccount));
+            id = clientsAccountsService.registerNewClient(name, passportId, Currency.valueOf(ccyOfInitialAccount));
         }
 
         return Response.ok(gson.toJson(String.format("Client with id '%s' and account were successfully created", id))).build();

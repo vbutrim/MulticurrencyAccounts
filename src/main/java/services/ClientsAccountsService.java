@@ -4,17 +4,18 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import helpers.Currency;
 import storage.BankStorage;
+import storage.data.Account;
 import storage.data.Client;
 
 import java.util.List;
 
 @Singleton
-public final class ClientsService {
+public final class ClientsAccountsService {
 
     private final BankStorage bankStorage;
 
     @Inject
-    public ClientsService(BankStorage bankStorage) {
+    public ClientsAccountsService(BankStorage bankStorage) {
         this.bankStorage = bankStorage;
     }
 
@@ -28,5 +29,18 @@ public final class ClientsService {
 
     public Client getExistingClientById(Long clientId) {
         return this.bankStorage.getClientById(clientId);
+    }
+
+    public long createAccountForClient(String name, Currency ccy) {
+        return this.createAccountForClient(name, ccy);
+    }
+
+    public Account getAccountOfClient(String name, Currency ccy) {
+        return this.bankStorage.getAccountOfClient(name, ccy);
+    }
+
+    // TODO: think about implementation
+    public Account getAccountOfClientById(String name, Currency ccy) {
+        return this.bankStorage.getAccountOfClient(name, ccy);
     }
 }

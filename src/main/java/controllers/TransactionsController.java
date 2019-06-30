@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import helpers.AccountAction;
 import helpers.Currency;
 import services.TransactionsService;
+import storage.data.Account;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -49,8 +50,23 @@ public final class TransactionsController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
+        AccountAction withdrawOrTopUp = AccountAction.valueOf(action);
+        StringBuilder endActionDescription = new StringBuilder(String.format("'%s's account: Successfully ", clientName));
 
-        return Response.ok().build();
+        switch (withdrawOrTopUp) {
+            case WITHDRAW: {
+                transactionsService.withdrawCashFromAccountOfClient(clientName, Currency.valueOf(currency), amountMoney);
+                endActionDescription.append("withdrew");
+                break;
+            }
+            case TOP_UP: {
+                transactionsService.topUpAccountBalanceOfClient(clientName, Currency.valueOf(currency), amountMoney);
+                endActionDescription.append("top up");
+            }
+        }
+
+        endActionDescription.append(String.format("%s %ss", amountMoney, currency));
+        return Response.ok(gson.toJson(endActionDescription.toString())).build();
     }
 
     /*

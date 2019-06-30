@@ -2,17 +2,27 @@ package services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import helpers.AccountAction;
 import helpers.Currency;
 import storage.data.Account;
+import storage.data.Transaction;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Singleton
 public final class TransactionsService {
 
     private final ClientsService clientsService;
+    private final List<Transaction> transactionsHistory = new CopyOnWriteArrayList<>();
 
     @Inject
     public TransactionsService(ClientsService clientsService) {
         this.clientsService = clientsService;
+    }
+
+    public List<Transaction> getTransactionsHistory() {
+        return transactionsHistory;
     }
 
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
@@ -21,6 +31,7 @@ public final class TransactionsService {
         synchronized (foundAccount) {
             foundAccount.withdraw(cash);
         }
+        transactionsHistory.add(Transaction.ofSingleOperation(name, ccy, AccountAction.WITHDRAW, cash));
     }
 
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
@@ -29,6 +40,7 @@ public final class TransactionsService {
         synchronized (foundAccount) {
             foundAccount.topUp(amount);
         }
+        transactionsHistory.add(Transaction.ofSingleOperation(name, ccy, AccountAction.TOP_UP, amount));
     }
 
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
@@ -59,6 +71,7 @@ public final class TransactionsService {
                 }
             }
         }
+        transactionsHistory.add(Transaction.ofTransferring(nameOfFromClient, nameOfToClient, ccy, AccountAction.TRANSFER, amount));
     }
 
     private void transferMoneyFromTo(Account accountFrom, Account accountTo, long amount) {

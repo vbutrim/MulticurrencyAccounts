@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import helpers.AccountAction;
 import helpers.Currency;
 import services.TransactionsService;
-import storage.data.Account;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +30,8 @@ public final class TransactionsController {
      */
     @GET
     public Response doGet() {
-        return Response.ok().build();
+        String json = gson.toJson(transactionsService.getTransactionsHistory());
+        return Response.ok(json).build();
     }
 
     /*

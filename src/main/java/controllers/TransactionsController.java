@@ -36,13 +36,14 @@ public final class TransactionsController {
      * + Parameters: Action (Transfer
      */
     @PUT
-    public Response doPut(@QueryParam("clientNameFrom") String clientNameFrom,
+    public Response doPut(@QueryParam("clientName") String clientName,
                           @QueryParam("currency") String currency,
                           @QueryParam("action") String action,
                           @QueryParam("amount") Long amountMoney) {
-        if (clientNameFrom == null || clientNameFrom.isEmpty() ||
-                currency == null || currency.isEmpty() || Currency.contains(currency) ||
-                action == null || action.isEmpty() || !AccountAction.containsAndNotEqualsToTransfer(action)) {
+        if (clientName == null || clientName.isEmpty() ||
+                currency == null || currency.isEmpty() || !Currency.contains(currency) ||
+                action == null || action.isEmpty() || !AccountAction.containsAndNotEqualsToTransfer(action) ||
+                amountMoney == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 

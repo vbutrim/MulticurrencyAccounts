@@ -4,12 +4,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import controllers.AccountsController;
 import controllers.ClientsController;
+import controllers.TransactionsController;
 import helpers.InjectingModule;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import services.ClientsService;
+import services.TransactionsService;
 
 import java.io.IOException;
 import java.net.URI;
@@ -42,6 +44,7 @@ public class Main {
         return new ResourceConfig()
                 .register(new ClientsController(injector.getInstance(ClientsService.class)))
                 .register(new AccountsController(injector.getInstance(ClientsService.class)))
+                .register(new TransactionsController(injector.getInstance(TransactionsService.class)))
 
                 .property(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, "true");
     }

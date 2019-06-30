@@ -40,17 +40,4 @@ public final class AccountsController {
         String json = gson.toJson(foundClient);
         return Response.ok(json).build();
     }
-
-    @GET
-    @Path("/{" + ACCOUNT_ID_ENTRY_POINT + "}")
-    public Response doGet(@PathParam(ACCOUNT_ID_ENTRY_POINT) Long accountId) {
-        if (accountId == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
-        Account foundClient = clientsAccountsService.getAccountOfClient(clientId);
-
-        String json = gson.toJson(foundClient);
-        return Response.ok(json).build();
-    }
 }

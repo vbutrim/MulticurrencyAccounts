@@ -31,8 +31,6 @@ public final class Transaction {
     }
 
     public static Transaction ofSingleOperation(String clientName, Currency ccy, AccountAction action, long amount) {
-
         return new Transaction(clientName, NULL_STRING_VALUE, ccy, action, amount);
-
     }
 }

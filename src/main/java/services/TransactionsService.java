@@ -52,11 +52,11 @@ public final class TransactionsService {
          * To prevent deadlocks order it. Otherwise, if we have situation with mutual transactions
          * (Client1 sends money Client2, Client2 sends money Client1)
          *  --- Thread A ---
-         *                  ----> blocks first account
-         *                  ----> is waiting second account
+         *                  ----> locks first account
+         *                  ----> is waiting until second account is unlocked
          *  --- Thread B ---
-         *                  ----> blocks second account
-         *                  ----> is waiting first account
+         *                  ----> locks second account
+         *                  ----> is waiting until first account is unlocked
          */
         if (foundAccountFrom.getId() < foundAccountTo.getId()) {
             synchronized (foundAccountFrom) {

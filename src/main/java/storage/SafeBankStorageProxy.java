@@ -11,13 +11,13 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Singleton
-public class SafeBankStorage implements BankStorage {
+public class SafeBankStorageProxy implements BankStorage {
 
     private final BankStorage nonSafeBankStorage;
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
     @Inject
-    public SafeBankStorage(BankStorageImpl nonSafeBankStorage) {
+    public SafeBankStorageProxy(BankStorageImpl nonSafeBankStorage) {
         this.nonSafeBankStorage = nonSafeBankStorage;
     }
 

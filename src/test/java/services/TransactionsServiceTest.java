@@ -11,7 +11,7 @@ public class TransactionsServiceTest {
     private ClientsService clientsService;
 
     @Before
-    public void beforeStart() {
+    public void setUp() {
         clientsService = mock(ClientsService.class);
     }
 

@@ -11,7 +11,7 @@ import storage.exceptions.AccountNotEnoughMoneyException;
 public class AccountTest {
 
     @Before
-    public void beforeStart() {
+    public void setUp() {
         GlobalIds.AccountIdentifier.set(100);
     }
 

@@ -28,7 +28,7 @@ public class ClientsServiceTest {
     private BankStorage bankStorage;
 
     @Before
-    public void beforeStart() {
+    public void setUp() {
         bankStorage = mock(BankStorage.class);
     }
 

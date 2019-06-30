@@ -15,7 +15,7 @@ public class ClientTest {
     private static final String CLIENT_PASSPORT_ID = "48156K";
 
     @Before
-    public void beforeStart() {
+    public void setUp() {
         GlobalIds.ClientIdentifier.set(100);
     }
 

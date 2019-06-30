@@ -6,7 +6,7 @@ public enum Currency {
     GBP("GBP"),
     RUB("RUB");
 
-    public final static Currency DEFAULT_VALUE = Currency.EUR;
+    public static final Currency DEFAULT_VALUE = Currency.EUR;
 
     private final String text;
 

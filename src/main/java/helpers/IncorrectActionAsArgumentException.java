@@ -1,8 +1,8 @@
 package helpers;
 
-public class IncorrectActionAsArgumentException extends RuntimeException {
+class IncorrectActionAsArgumentException extends RuntimeException {
 
-    public IncorrectActionAsArgumentException(String value) {
+    IncorrectActionAsArgumentException(String value) {
         super(String.format("Incorrect Action '%s' as an Argument", value));
     }
 }

@@ -5,7 +5,7 @@ import helpers.GlobalIds;
 import lombok.Getter;
 import storage.exceptions.AccountWithSuchCcyAlreadyExistsException;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public final class Client {
@@ -19,7 +19,7 @@ public final class Client {
     @Getter
     private String passportId;
 
-    private Map<Currency, Long> accountIdPerCcy = new HashMap<>();
+    private Map<Currency, Long> accountIdPerCcy = new EnumMap<>(Currency.class);
 
     public Client(String name, String passportId, Currency ccyOfInitialAccount, long idOfInitialAccount) {
         this(name, passportId);

@@ -18,7 +18,4 @@ public interface BankStorage {
 
     Account getAccountOfClient(String name, Currency ccy);
 
-    void withdrawCashFromAccountOfClient(String name, Currency ccy, long cash);
-
-    void topUpAccountBalanceOfClient(String name, Currency ccy, long amount);
 }

@@ -110,14 +110,4 @@ public final class BankStorageImpl implements BankStorage {
 
         return foundAccount;
     }
-
-    @Override
-    public void withdrawCashFromAccountOfClient(String name, Currency ccy, long cash) {
-        getAccountOfClient(name, ccy).withdraw(cash);
-    }
-
-    @Override
-    public void topUpAccountBalanceOfClient(String name, Currency ccy, long amount) {
-        getAccountOfClient(name, ccy).topUp(amount);
-    }
 }

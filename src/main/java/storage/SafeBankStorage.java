@@ -70,26 +70,4 @@ public class SafeBankStorage implements BankStorage {
             rwLock.readLock().unlock();
         }
     }
-
-    // TODO: move these parts to TransactionsDepartment
-
-    @Override
-    public void withdrawCashFromAccountOfClient(String name, Currency ccy, long cash) {
-        rwLock.writeLock().lock();
-        try {
-            nonSafeBankStorage.withdrawCashFromAccountOfClient(name, ccy, cash);
-        } finally {
-            rwLock.writeLock().unlock();
-        }
-    }
-
-    @Override
-    public void topUpAccountBalanceOfClient(String name, Currency ccy, long amount) {
-        rwLock.writeLock().lock();
-        try {
-            nonSafeBankStorage.topUpAccountBalanceOfClient(name, ccy, amount);
-        } finally {
-            rwLock.writeLock().unlock();
-        }
-    }
 }

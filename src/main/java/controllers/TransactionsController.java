@@ -73,16 +73,12 @@ public final class TransactionsController {
         AccountAction withdrawOrTopUp = AccountAction.valueOf(action);
         StringBuilder endActionDescription = new StringBuilder(String.format("'%s's account: Successfully ", clientName));
 
-        switch (withdrawOrTopUp) {
-            case WITHDRAW: {
-                transactionsService.withdrawCashFromAccountOfClient(clientName, Currency.valueOf(currency), amountMoney);
-                endActionDescription.append("withdrew");
-                break;
-            }
-            case TOP_UP: {
-                transactionsService.topUpAccountBalanceOfClient(clientName, Currency.valueOf(currency), amountMoney);
-                endActionDescription.append("top up");
-            }
+        if (withdrawOrTopUp == AccountAction.WITHDRAW) {
+            transactionsService.withdrawCashFromAccountOfClient(clientName, Currency.valueOf(currency), amountMoney);
+            endActionDescription.append("withdrew");
+        } else if (withdrawOrTopUp == AccountAction.TOP_UP) {
+            transactionsService.topUpAccountBalanceOfClient(clientName, Currency.valueOf(currency), amountMoney);
+            endActionDescription.append("top up");
         }
 
         endActionDescription.append(String.format(" %s %ss", amountMoney, currency));

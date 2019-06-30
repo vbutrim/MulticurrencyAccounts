@@ -1,6 +1,5 @@
 package storage.exceptions;
 
-
 import helpers.Currency;
 
 public class AccountWithSuchCcyAlreadyExistsException extends RuntimeException {

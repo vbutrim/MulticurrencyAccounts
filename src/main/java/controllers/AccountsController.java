@@ -2,7 +2,7 @@ package controllers;
 
 import com.google.gson.Gson;
 import helpers.Currency;
-import services.ClientsAccountsService;
+import services.ClientsService;
 import storage.data.Account;
 
 import javax.ws.rs.GET;
@@ -17,11 +17,11 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public final class AccountsController {
 
-    private final ClientsAccountsService clientsAccountsService;
+    private final ClientsService clientsService;
     private final Gson gson = new Gson();
 
-    public AccountsController(ClientsAccountsService clientsAccountsService) {
-        this.clientsAccountsService = clientsAccountsService;
+    public AccountsController(ClientsService clientsService) {
+        this.clientsService = clientsService;
     }
 
     /*
@@ -33,7 +33,7 @@ public final class AccountsController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        Account foundClient = clientsAccountsService.getAccountOfClient(clientName, Currency.valueOf(ccy));
+        Account foundClient = clientsService.getAccountOfClient(clientName, Currency.valueOf(ccy));
 
         String json = gson.toJson(foundClient);
         return Response.ok(json).build();
@@ -48,7 +48,7 @@ public final class AccountsController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        long createdAccountId = clientsAccountsService.createAccountForClient(clientName, Currency.valueOf(ccy));
+        long createdAccountId = clientsService.createAccountForClient(clientName, Currency.valueOf(ccy));
 
         String json = gson.toJson(String.format("'%s' account with id '%s' for Client '%s' was successfully created", ccy, createdAccountId, clientName));
         return Response.ok(json).build();

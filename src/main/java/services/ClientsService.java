@@ -10,12 +10,12 @@ import storage.data.Client;
 import java.util.List;
 
 @Singleton
-public final class ClientsAccountsService {
+public final class ClientsService {
 
     private final BankStorage bankStorage;
 
     @Inject
-    public ClientsAccountsService(BankStorage bankStorage) {
+    public ClientsService(BankStorage bankStorage) {
         this.bankStorage = bankStorage;
     }
 

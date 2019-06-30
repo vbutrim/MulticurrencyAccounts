@@ -32,15 +32,10 @@ public final class ClientsAccountsService {
     }
 
     public long createAccountForClient(String name, Currency ccy) {
-        return this.createAccountForClient(name, ccy);
+        return this.bankStorage.createAccountForClient(name, ccy);
     }
 
     public Account getAccountOfClient(String name, Currency ccy) {
-        return this.bankStorage.getAccountOfClient(name, ccy);
-    }
-
-    // TODO: think about implementation
-    public Account getAccountOfClientById(String name, Currency ccy) {
         return this.bankStorage.getAccountOfClient(name, ccy);
     }
 }

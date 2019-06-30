@@ -2,6 +2,7 @@ package main;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import controllers.AccountsController;
 import controllers.ClientsController;
 import helpers.InjectingModule;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -40,6 +41,7 @@ public class Main {
     private static ResourceConfig getResourceConfig() {
         return new ResourceConfig()
                 .register(new ClientsController(injector.getInstance(ClientsAccountsService.class)))
+                .register(new AccountsController(injector.getInstance(ClientsAccountsService.class)))
 
                 .property(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, "true");
     }

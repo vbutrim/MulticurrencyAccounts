@@ -6,8 +6,8 @@ import services.ClientsAccountsService;
 import storage.data.Account;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -17,8 +17,6 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public final class AccountsController {
 
-    private final static String ACCOUNT_ID_ENTRY_POINT = "id";
-
     private final ClientsAccountsService clientsAccountsService;
     private final Gson gson = new Gson();
 
@@ -27,7 +25,7 @@ public final class AccountsController {
     }
 
     /*
-     * Get Account By Client name and Currency
+     * Get Account by Client Name and Currency
      */
     @GET
     public Response doGet(@QueryParam("clientName") String clientName, @QueryParam("currency") String ccy) {
@@ -38,6 +36,21 @@ public final class AccountsController {
         Account foundClient = clientsAccountsService.getAccountOfClient(clientName, Currency.valueOf(ccy));
 
         String json = gson.toJson(foundClient);
+        return Response.ok(json).build();
+    }
+
+    /*
+     * Create new Account for Client with Currency
+     */
+    @POST
+    public Response doPost(@QueryParam("clientName") String clientName, @QueryParam("currency") String ccy) {
+        if (clientName == null || ccy == null || clientName.isEmpty() || ccy.isEmpty() || !Currency.contains(ccy)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        long createdAccountId = clientsAccountsService.createAccountForClient(clientName, Currency.valueOf(ccy));
+
+        String json = gson.toJson(String.format("'%s' account with id '%s' for Client '%s' was successfully created", ccy, createdAccountId, clientName));
         return Response.ok(json).build();
     }
 }

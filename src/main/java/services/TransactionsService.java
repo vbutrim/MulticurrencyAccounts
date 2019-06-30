@@ -49,8 +49,9 @@ public final class TransactionsService {
         Account foundAccountTo = clientsService.getAccountOfClient(nameOfToClient, ccy);
 
         /*
-         * To prevent deadlocks order it. Otherwise, if we have situation with mutual transactions
-         * (Client1 sends money Client2, Client2 sends money Client1)
+         * To prevent deadlocks, lock Objects in order way. Otherwise, if we have situation with mutual transactions,
+         *                                                          Requests threads will block each other
+         *                      (Client1 sends money Client2, Client2 sends money Client1)
          *  --- Thread A ---
          *                  ----> locks first account
          *                  ----> is waiting until second account is unlocked

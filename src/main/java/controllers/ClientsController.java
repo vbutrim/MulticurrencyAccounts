@@ -88,6 +88,6 @@ public final class ClientsController {
 
         clientsService.closeClientAndAccountsWithNoMoney(clientId);
 
-        return Response.ok(gson.toJson(String.format("Accounts of Client with id '%s' have been successfully closed", clientId))).build();
+        return Response.ok(gson.toJson(String.format("Account(s) of Client with id '%s' has(-ve) been successfully closed", clientId))).build();
     }
 }

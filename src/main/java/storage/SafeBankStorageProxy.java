@@ -32,6 +32,16 @@ public class SafeBankStorageProxy implements BankStorage {
     }
 
     @Override
+    public void closeClientAndAccountsWithZeroBalance(String name) {
+        rwLock.writeLock().lock();
+        try {
+            nonSafeBankStorage.closeClientAndAccountsWithZeroBalance(name);
+        } finally {
+            rwLock.writeLock().unlock();
+        }
+    }
+
+    @Override
     public List<Client> getAllClients() {
         rwLock.readLock().lock();
         try {

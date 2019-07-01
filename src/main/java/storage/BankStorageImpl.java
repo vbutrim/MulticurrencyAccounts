@@ -1,12 +1,14 @@
 package storage;
 
 import com.google.inject.Singleton;
+import lombok.Getter;
 import storage.data.Account;
 import storage.data.Client;
 import storage.exceptions.AccountNotFoundException;
 import storage.exceptions.AccountWithSuchCcyAlreadyExistsException;
 import storage.exceptions.ClientAlreadyExistsException;
 import helpers.Currency;
+import storage.exceptions.ClientHasNonZeroBalancedAccount;
 import storage.exceptions.ClientNotFoundException;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public final class BankStorageImpl implements BankStorage {
     private final Map<String, Client> clientsDatabase = new HashMap<>();
     private final Map<Long, String> clientNamePerId = new HashMap<>();
 
+    @Getter // only for test purposes
     private final Map<Long, Account> accountsDatabase = new HashMap<>();
 
     BankStorageImpl() {
@@ -43,6 +46,27 @@ public final class BankStorageImpl implements BankStorage {
         clientNamePerId.put(newClient.getId(), name);
 
         return newClient.getId();
+    }
+
+    @Override
+    public void closeClientAndAccountsWithZeroBalance(String name) {
+        if (!clientsDatabase.containsKey(name)) {
+            throw new ClientNotFoundException(name);
+        }
+
+        Client foundClient = clientsDatabase.get(name);
+        boolean clientHasOnlyEmptyAccounts = foundClient.getOpenedAccounts().values()
+                                            .stream()
+                                            .map(x -> accountsDatabase.get(x).getBalance())
+                                            .reduce(0L, Long::sum).equals(0L);
+
+        if (!clientHasOnlyEmptyAccounts) {
+            throw new ClientHasNonZeroBalancedAccount(name);
+        }
+
+        clientNamePerId.remove(foundClient.getId());
+        foundClient.getOpenedAccounts().values().forEach(accountsDatabase::remove);
+        clientsDatabase.remove(name);
     }
 
     @Override

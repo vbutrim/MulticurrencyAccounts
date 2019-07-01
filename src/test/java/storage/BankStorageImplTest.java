@@ -9,10 +9,16 @@ import storage.data.Client;
 import storage.exceptions.AccountNotFoundException;
 import storage.exceptions.AccountWithSuchCcyAlreadyExistsException;
 import storage.exceptions.ClientAlreadyExistsException;
+import storage.exceptions.ClientHasNonZeroBalancedAccount;
 import storage.exceptions.ClientNotFoundException;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class BankStorageImplTest {
 
@@ -33,22 +39,26 @@ public class BankStorageImplTest {
     @Test
     public void shouldRegisterNewClient() {
         // Given
-        BankStorage bankStorage = createInstance();
+        BankStorageImpl bankStorage = createInstance();
 
         // When
-        bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
+        long actualClientId = bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
 
         // Then
         List<Client> clients = bankStorage.getAllClients();
         Assert.assertEquals(1, clients.size());
 
         Client addedClient = clients.get(0);
+        Assert.assertEquals(addedClient.getId(), actualClientId);
         Assert.assertEquals(CLIENT_NAME, addedClient.getName());
         Assert.assertEquals(PASSPORT_ID, addedClient.getPassportId());
 
         Map<Currency, Long> accountsPerClient = addedClient.getOpenedAccounts();
         Assert.assertEquals(1, accountsPerClient.size());
         Assert.assertTrue(accountsPerClient.containsKey(Currency.DEFAULT_VALUE));
+
+        long actualAccountId = accountsPerClient.values().iterator().next();
+        assertTrue(bankStorage.getAccountsDatabase().containsKey(actualAccountId));
     }
 
     @Test(expected = ClientAlreadyExistsException.class)
@@ -172,7 +182,56 @@ public class BankStorageImplTest {
         // Then
     }
 
-    private BankStorage createInstance() {
+    @Test()
+    public void shouldDeleteClientAndAccountsFromStorageOnCloseClient() {
+        // Given
+        BankStorageImpl bankStorage = createInstance();
+        long actualClientId = bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
+        bankStorage.createAccountForClient(CLIENT_NAME, Currency.RUB);
+        Collection<Long> accountIds = bankStorage.getClientById(actualClientId).getOpenedAccounts().values();
+
+        // When
+        bankStorage.closeClientAndAccountsWithZeroBalance(CLIENT_NAME);
+
+        // Then
+        assertThatThrownBy(() -> bankStorage.getClientById(actualClientId))
+                .isInstanceOf(ClientNotFoundException.class);
+        assertThatThrownBy(() -> bankStorage.getAccountOfClient(CLIENT_NAME, Currency.DEFAULT_VALUE))
+                .isInstanceOf(ClientNotFoundException.class);
+        assertThatThrownBy(() -> bankStorage.getAccountOfClient(CLIENT_NAME, Currency.RUB))
+                .isInstanceOf(ClientNotFoundException.class);
+
+        for (Long accountId : accountIds) {
+            assertFalse(bankStorage.getAccountsDatabase().containsKey(accountId));
+        }
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void shouldNotDeleteClientIfNotExistOnCloseClient() {
+        // Given
+        BankStorageImpl bankStorage = createInstance();
+
+        // When
+        bankStorage.closeClientAndAccountsWithZeroBalance(CLIENT_NAME);
+
+        // Then
+    }
+
+    @Test(expected = ClientHasNonZeroBalancedAccount.class)
+    public void shouldNotDeleteClientIfHasNonZeroBalancedAccountOnCloseClient() {
+        // Given
+        BankStorageImpl bankStorage = createInstance();
+        bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
+        bankStorage.createAccountForClient(CLIENT_NAME, Currency.RUB);
+        bankStorage.getAccountOfClient(CLIENT_NAME, Currency.RUB).topUp(100L);
+
+        // When
+        bankStorage.closeClientAndAccountsWithZeroBalance(CLIENT_NAME);
+
+        // Then
+    }
+
+    private BankStorageImpl createInstance() {
         return new BankStorageImpl();
     }
 }

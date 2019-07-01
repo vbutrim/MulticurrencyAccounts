@@ -10,6 +10,8 @@ public interface BankStorage {
 
     long registerNewClient(String name, String passportId, Currency ccyOfInitialAccount);
 
+    void closeClientAndAccountsWithZeroBalance(String name);
+
     List<Client> getAllClients();
 
     Client getClientById(Long id);

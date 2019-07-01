@@ -1,5 +1,7 @@
 package helpers;
 
+import helpers.exceptions.IncorrectCurrencyAsArgumentException;
+
 public enum Currency {
     USD("USD"),
     EUR("EUR"),

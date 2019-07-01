@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import helpers.AccountAction;
 import helpers.Currency;
+import helpers.exceptions.AccountsMustBeDifferentOnTransferringException;
 import storage.data.Account;
 import storage.data.Transaction;
 
@@ -46,6 +47,10 @@ public final class TransactionsService {
 
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public void transferMoneyFromTo(String nameOfFromClient, String nameOfToClient, Currency ccy, long amount) {
+        if (nameOfFromClient.equals(nameOfToClient)) {
+            throw new AccountsMustBeDifferentOnTransferringException();
+        }
+
         Account foundAccountFrom = clientsService.getAccountOfClient(nameOfFromClient, ccy);
         Account foundAccountTo = clientsService.getAccountOfClient(nameOfToClient, ccy);
 

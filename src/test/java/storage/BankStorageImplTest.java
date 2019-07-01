@@ -172,35 +172,6 @@ public class BankStorageImplTest {
         // Then
     }
 
-/*    @Test
-    public void shouldTopUpOnClientsAccount() {
-        // Given
-        BankStorage bankStorage = createInstance();
-        bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
-
-        // When
-        bankStorage.topUpAccountBalanceOfClient(CLIENT_NAME, Currency.DEFAULT_VALUE, 100L);
-
-        // Then
-        Account actualAccount = bankStorage.getAccountOfClient(CLIENT_NAME, Currency.DEFAULT_VALUE);
-        Assert.assertEquals(100L, actualAccount.getBalance());
-    }
-
-    @Test
-    public void shouldWithdrawCashOfClientsAccount() {
-        // Given
-        BankStorage bankStorage = createInstance();
-        bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
-        bankStorage.topUpAccountBalanceOfClient(CLIENT_NAME, Currency.DEFAULT_VALUE, 100L);
-
-        // When
-        bankStorage.withdrawCashFromAccountOfClient(CLIENT_NAME, Currency.DEFAULT_VALUE, 10L);
-
-        // Then
-        Account actualAccount = bankStorage.getAccountOfClient(CLIENT_NAME, Currency.DEFAULT_VALUE);
-        Assert.assertEquals(90L, actualAccount.getBalance());
-    }*/
-
     private BankStorage createInstance() {
         return new BankStorageImpl();
     }

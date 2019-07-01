@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -47,6 +48,22 @@ public class ClientsServiceTest {
         Assert.assertEquals(expectedClientId, actualClientId);
         verify(bankStorage, times(1)).registerNewClient(any(String.class), any(String.class), any(Currency.class));
         verify(bankStorage, times(1)).registerNewClient(CLIENT_NAME, PASSPORT_ID, CURRENCY);
+    }
+
+    @Test
+    public void shouldCloseClientAndAccountsWithNoMoneyWithBankStorage() {
+        // Given
+        ClientsService clientsService = createInstance();
+
+        final long clientId = 1L;
+        doNothing().when(bankStorage).closeClientAndAccountsWithNoMoney(clientId);
+
+        // When
+        clientsService.closeClientAndAccountsWithNoMoney(clientId);
+
+        // Then
+        verify(bankStorage, times(1)).closeClientAndAccountsWithNoMoney(any(Long.class));
+        verify(bankStorage, times(1)).closeClientAndAccountsWithNoMoney(clientId);
     }
 
     @Test

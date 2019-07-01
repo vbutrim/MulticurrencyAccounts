@@ -5,6 +5,7 @@ import helpers.Currency;
 import services.ClientsService;
 import storage.data.Client;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -73,5 +74,20 @@ public final class ClientsController {
         }
 
         return Response.ok(gson.toJson(String.format("Client '%s' with id '%s' and '%s' account were successfully created", name, id, ccyOfInitialAccount))).build();
+    }
+
+    /*
+     * Close Client and its Accounts
+     */
+    @DELETE
+    @Path("/{" + CLIENT_ID_ENTRY_POINT + "}")
+    public Response doDelete(@PathParam(CLIENT_ID_ENTRY_POINT) Long clientId) {
+        if (clientId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        clientsService.closeClientAndAccountsWithNoMoney(clientId);
+
+        return Response.ok(gson.toJson(String.format("Accounts of Client with id '%s' have been successfully closed", clientId))).build();
     }
 }

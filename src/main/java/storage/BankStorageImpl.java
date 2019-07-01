@@ -11,6 +11,7 @@ import helpers.Currency;
 import storage.exceptions.ClientHasNonZeroBalancedAccount;
 import storage.exceptions.ClientNotFoundException;
 
+import javax.ws.rs.InternalServerErrorException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,24 +50,22 @@ public final class BankStorageImpl implements BankStorage {
     }
 
     @Override
-    public void closeClientAndAccountsWithZeroBalance(String name) {
-        if (!clientsDatabase.containsKey(name)) {
-            throw new ClientNotFoundException(name);
-        }
+    public void closeClientAndAccountsWithNoMoney(Long id) {
 
-        Client foundClient = clientsDatabase.get(name);
+        Client foundClient = getClientById(id);
+
         boolean clientHasOnlyEmptyAccounts = foundClient.getOpenedAccounts().values()
                                             .stream()
                                             .map(x -> accountsDatabase.get(x).getBalance())
                                             .reduce(0L, Long::sum).equals(0L);
 
         if (!clientHasOnlyEmptyAccounts) {
-            throw new ClientHasNonZeroBalancedAccount(name);
+            throw new ClientHasNonZeroBalancedAccount(foundClient.getName());
         }
 
         clientNamePerId.remove(foundClient.getId());
         foundClient.getOpenedAccounts().values().forEach(accountsDatabase::remove);
-        clientsDatabase.remove(name);
+        clientsDatabase.remove(foundClient.getName());
     }
 
     @Override
@@ -83,7 +82,7 @@ public final class BankStorageImpl implements BankStorage {
         Client foundClient = clientsDatabase.getOrDefault(clientNamePerId.get(id), null);
 
         if (foundClient == null) {
-            throw new ClientNotFoundException(id);
+            throw new InternalServerErrorException(String.format("Client mapping is wrong. Server wasn't able to find Client Name with id '%s'", id));
         }
 
         return foundClient;

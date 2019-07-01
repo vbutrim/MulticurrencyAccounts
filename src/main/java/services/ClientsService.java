@@ -23,6 +23,10 @@ public final class ClientsService {
         return this.bankStorage.registerNewClient(name, passportId, ccy);
     }
 
+    public void closeClientAndAccountsWithNoMoney(Long clientId) {
+        this.bankStorage.closeClientAndAccountsWithNoMoney(clientId);
+    }
+
     public List<Client> getAllClients() {
         return this.bankStorage.getAllClients();
     }

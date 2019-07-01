@@ -191,7 +191,7 @@ public class BankStorageImplTest {
         Collection<Long> accountIds = bankStorage.getClientById(actualClientId).getOpenedAccounts().values();
 
         // When
-        bankStorage.closeClientAndAccountsWithZeroBalance(CLIENT_NAME);
+        bankStorage.closeClientAndAccountsWithNoMoney(actualClientId);
 
         // Then
         assertThatThrownBy(() -> bankStorage.getClientById(actualClientId))
@@ -212,7 +212,7 @@ public class BankStorageImplTest {
         BankStorageImpl bankStorage = createInstance();
 
         // When
-        bankStorage.closeClientAndAccountsWithZeroBalance(CLIENT_NAME);
+        bankStorage.closeClientAndAccountsWithNoMoney(25L);
 
         // Then
     }
@@ -221,12 +221,12 @@ public class BankStorageImplTest {
     public void shouldNotDeleteClientIfHasNonZeroBalancedAccountOnCloseClient() {
         // Given
         BankStorageImpl bankStorage = createInstance();
-        bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
+        long actualClientId = bankStorage.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE);
         bankStorage.createAccountForClient(CLIENT_NAME, Currency.RUB);
         bankStorage.getAccountOfClient(CLIENT_NAME, Currency.RUB).topUp(100L);
 
         // When
-        bankStorage.closeClientAndAccountsWithZeroBalance(CLIENT_NAME);
+        bankStorage.closeClientAndAccountsWithNoMoney(actualClientId);
 
         // Then
     }

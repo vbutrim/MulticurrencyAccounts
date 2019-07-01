@@ -7,14 +7,15 @@ import helpers.Currency;
 import storage.data.Account;
 import storage.data.Transaction;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Singleton
 public final class TransactionsService {
 
     private final ClientsService clientsService;
-    private final List<Transaction> transactionsHistory = new CopyOnWriteArrayList<>();
+    private final List<Transaction> transactionsHistory = Collections.synchronizedList(new LinkedList<>());
 
     @Inject
     public TransactionsService(ClientsService clientsService) {

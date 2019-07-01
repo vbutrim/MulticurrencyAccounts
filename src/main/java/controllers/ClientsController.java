@@ -19,10 +19,10 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public final class ClientsController {
 
+    private static final Gson gson = new Gson();
     private static final String CLIENT_ID_ENTRY_POINT = "id";
 
     private final ClientsService clientsService;
-    private final Gson gson = new Gson();
 
     public ClientsController(ClientsService clientsService) {
         this.clientsService = clientsService;

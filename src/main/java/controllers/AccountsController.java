@@ -17,8 +17,9 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public final class AccountsController {
 
+    private static final Gson gson = new Gson();
+
     private final ClientsService clientsService;
-    private final Gson gson = new Gson();
 
     public AccountsController(ClientsService clientsService) {
         this.clientsService = clientsService;

@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import controllers.AccountsController;
 import controllers.ClientsController;
+import controllers.ThrowableExceptionMapper;
 import controllers.TransactionsController;
 import helpers.InjectingModule;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -46,6 +47,7 @@ public class Main {
                 .register(new AccountsController(injector.getInstance(ClientsService.class)))
                 .register(new TransactionsController(injector.getInstance(TransactionsService.class)))
 
+                .register(new ThrowableExceptionMapper())
                 .property(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, "true");
     }
 }

@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public final class TransactionsController {
 
+    private static final Gson gson = new Gson();
     private final TransactionsService transactionsService;
-    private final Gson gson = new Gson();
 
     public TransactionsController(TransactionsService transactionsService) {
         this.transactionsService = transactionsService;

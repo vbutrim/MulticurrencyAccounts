@@ -45,7 +45,8 @@ public class ClientsControllerTest extends JerseyTest {
 
         // Then
         verify(clientsService, times(1)).getAllClients();
-        assertEquals(gson.toJson(expectedClients), response.getEntity());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(gson.toJson(expectedClients), response.readEntity(String.class));
     }
 
     // TODO: provide tests

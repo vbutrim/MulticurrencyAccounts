@@ -7,6 +7,8 @@ import controllers.ClientsController;
 import controllers.ThrowableExceptionMapper;
 import controllers.TransactionsController;
 import helpers.InjectingModule;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -24,15 +26,17 @@ public class Main {
     private static final String API_URL_V1 = "/api/v1";
 
     private static final Injector injector = Guice.createInjector(new InjectingModule());
+    private static final Logger logger = LogManager.getLogger("Main");
 
     public static void main(String[] args) throws IOException {
         // TODO: port
 
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_SERVER + BASE_PORT + API_URL_V1), getResourceConfig());
-        System.out.println("Server started");
+
+        logger.info("Server started");
 
         try {
-            System.out.println("Press any key to stop the service...");
+            logger.info("Press any key to stop the service...");
 
             //noinspection ResultOfMethodCallIgnored
             System.in.read();

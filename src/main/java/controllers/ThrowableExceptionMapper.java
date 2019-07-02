@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import helpers.exceptions.AccountsMustBeDifferentOnTransferringException;
 import helpers.exceptions.IncorrectActionAsArgumentException;
 import helpers.exceptions.IncorrectCurrencyAsArgumentException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import storage.exceptions.AccountBalanceLimitationException;
 import storage.exceptions.AccountNotEnoughMoneyException;
 import storage.exceptions.AccountNotFoundException;
@@ -22,6 +24,7 @@ import javax.ws.rs.ext.Provider;
 public class ThrowableExceptionMapper implements ExceptionMapper<Throwable> {
 
     private static final Gson gson = new Gson();
+    private static final Logger logger = LogManager.getLogger("ThrowableExceptionMapper");
 
     @Override
     @Produces(MediaType.APPLICATION_JSON)
@@ -43,7 +46,7 @@ public class ThrowableExceptionMapper implements ExceptionMapper<Throwable> {
             statusForEndUser = Response.Status.BAD_REQUEST;
         } else {
             statusForEndUser = Response.Status.INTERNAL_SERVER_ERROR;
-            exception.printStackTrace();
+            logger.error("Internal server error", exception);
         }
 
         return Response

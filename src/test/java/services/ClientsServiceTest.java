@@ -91,7 +91,7 @@ public class ClientsServiceTest {
         when(bankStorage.getClientById(1L)).thenReturn(expectedClient);
 
         // When
-        Client actualClient = clientsService.getExistingClientById(1L);
+        Client actualClient = clientsService.getClientById(1L);
 
         // Then
         Assert.assertEquals(expectedClient, actualClient);

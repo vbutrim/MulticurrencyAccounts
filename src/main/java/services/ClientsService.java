@@ -31,7 +31,7 @@ public final class ClientsService {
         return this.bankStorage.getAllClients();
     }
 
-    public Client getExistingClientById(Long clientId) {
+    public Client getClientById(Long clientId) {
         return this.bankStorage.getClientById(clientId);
     }
 

@@ -47,7 +47,7 @@ public final class ClientsController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        Client foundClient = clientsService.getExistingClientById(clientId);
+        Client foundClient = clientsService.getClientById(clientId);
 
         String json = gson.toJson(foundClient);
         return Response.ok(json).build();

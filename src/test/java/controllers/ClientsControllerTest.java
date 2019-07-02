@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -47,6 +48,23 @@ public class ClientsControllerTest extends JerseyTest {
         verify(clientsService, times(1)).getAllClients();
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(gson.toJson(expectedClients), response.readEntity(String.class));
+    }
+
+    @Test
+    public void shouldReturnCorrectClientOnGetClientById() {
+        // Given
+        long clientId = 1L;
+        Client expectedClient = mock(Client.class);
+        when(clientsService.getClientById(clientId)).thenReturn(expectedClient);
+
+        // When
+        Response response = target("/clients/" + clientId).request().get();
+
+        // Then
+        verify(clientsService, times(1)).getClientById(any(Long.class));
+        verify(clientsService, times(1)).getClientById(clientId);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(gson.toJson(expectedClient), response.readEntity(String.class));
     }
 
     // TODO: provide tests

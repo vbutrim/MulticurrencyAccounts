@@ -21,14 +21,14 @@ public class Main {
 
     private static final String BASE_SERVER = "http://localhost:";
     private static final String BASE_PORT = "8080";
-    private static final String BASE_API_URL = "/api/v1";
+    private static final String API_URL_V1 = "/api/v1";
 
     private static final Injector injector = Guice.createInjector(new InjectingModule());
 
     public static void main(String[] args) throws IOException {
         // TODO: port
 
-        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_SERVER + BASE_PORT + BASE_API_URL), getResourceConfig());
+        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_SERVER + BASE_PORT + API_URL_V1), getResourceConfig());
         System.out.println("Server started");
 
         try {

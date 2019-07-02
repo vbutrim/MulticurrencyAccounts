@@ -16,7 +16,7 @@ Windows-like:
 > assembly.sh
 ```
 
-After that, to run the server:
+To run the server:
 ```$xslt
 > java -jar server.jar
 ```

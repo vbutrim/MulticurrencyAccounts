@@ -144,4 +144,19 @@ public class ClientsControllerTest extends JerseyTest {
         assertTrue(responseMessage.contains(clientId.toString()));
         assertTrue(responseMessage.contains("been successfully closed"));
     }
+
+    @Test
+    public void shouldReturnBadRequestOnIncorrectPost() {
+        // Given
+
+        // When
+        Response response = target("/clients")
+                .queryParam("name", CLIENT_NAME)
+                .request()
+                .post(null);
+
+        // Then
+        verify(clientsService, times(0)).getAccountOfClient(any(String.class), any(Currency.class));
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
 }

@@ -2,6 +2,7 @@ package storage;
 
 import com.google.inject.Singleton;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import storage.data.Account;
 import storage.data.Client;
 import storage.exceptions.AccountNotFoundException;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Singleton
+@NoArgsConstructor
 public final class BankStorageImpl implements BankStorage {
 
     private final Map<String, Client> clientsDatabase = new HashMap<>();
@@ -25,9 +27,6 @@ public final class BankStorageImpl implements BankStorage {
 
     @Getter // only for test purposes
     private final Map<Long, Account> accountsDatabase = new HashMap<>();
-
-    BankStorageImpl() {
-    }
 
     /*
      * Clients features

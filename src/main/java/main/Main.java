@@ -29,11 +29,17 @@ public class Main {
     private static final Logger logger = LogManager.getLogger("Main");
 
     public static void main(String[] args) throws IOException {
-        // TODO: port
+        if (args.length > 1) {
+            logger.error("Incorrect arguments");
+        }
 
-        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_SERVER + BASE_PORT + API_URL_V1), getResourceConfig());
+        String portToStart = args.length == 1 ? args[0] : BASE_PORT;
 
-        logger.info("Server started");
+        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
+                URI.create(BASE_SERVER + portToStart + API_URL_V1),
+                getResourceConfig());
+
+        logger.info("Server started: {}{}", BASE_SERVER, portToStart);
 
         try {
             logger.info("Press any key to stop the service...");

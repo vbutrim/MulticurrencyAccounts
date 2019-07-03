@@ -18,7 +18,7 @@ Windows-like:
 
 To run the server:
 ```$xslt
-> java -jar server.jar
+> java -jar server.jar [PORT=8080]
 ```
 
 ## API usage

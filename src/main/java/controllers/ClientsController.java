@@ -57,7 +57,7 @@ public final class ClientsController {
     /*
      * Register new Client and Account for it
      */
-    @POST // TODO: use dto
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response doPost(ClientRequestDto clientRequestDto) {
         String name = clientRequestDto.getName();

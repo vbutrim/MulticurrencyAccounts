@@ -1,6 +1,7 @@
 package controllers;
 
 import com.google.gson.Gson;
+import controllers.dtos.AccountRequestDto;
 import helpers.Currency;
 import services.ClientsService;
 import storage.data.Account;
@@ -44,9 +45,11 @@ public final class AccountsController {
     /*
      * Create new Account for Client with Currency
      */
-    @POST // TODO: use dto
-    public Response doPost(@QueryParam("clientName") String clientName,
-                           @QueryParam("currency") String ccy) {
+    @POST
+    public Response doPost(AccountRequestDto accountRequestDto) {
+        String clientName = accountRequestDto.getClientName();
+        String ccy = accountRequestDto.getCurrency();
+
         if (clientName == null || ccy == null || clientName.isEmpty() || ccy.isEmpty() || !Currency.contains(ccy)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

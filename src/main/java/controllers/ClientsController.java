@@ -1,10 +1,12 @@
 package controllers;
 
 import com.google.gson.Gson;
+import controllers.dtos.ClientRequestDto;
 import helpers.Currency;
 import services.ClientsService;
 import storage.data.Client;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -57,9 +59,12 @@ public final class ClientsController {
      * Register new Client and Account for it
      */
     @POST // TODO: use dto
-    public Response doPost(@QueryParam("name") String name,
-                           @QueryParam("passportId") String passportId,
-                           @QueryParam("ccyOfInitialAccount") String ccyOfInitialAccount) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response doPost(ClientRequestDto clientRequestDto) {
+        String name = clientRequestDto.getName();
+        String passportId = clientRequestDto.getPassportId();
+        String ccyOfInitialAccount = clientRequestDto.getCcyOfInitialAccount();
+
         if (name == null || passportId == null || name.isEmpty() || passportId.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

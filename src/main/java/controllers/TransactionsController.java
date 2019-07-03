@@ -1,10 +1,13 @@
 package controllers;
 
 import com.google.gson.Gson;
+import controllers.dtos.ExtendedAccountRequestDto;
+import controllers.dtos.TransferRequestDto;
 import helpers.AccountAction;
 import helpers.Currency;
 import services.TransactionsService;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -38,11 +41,14 @@ public final class TransactionsController {
      * Transfer money from Client (nameFrom) to Client (nameTo)
      * + Parameters: Currency (String), Amount of Money (Long)
      */
-    @POST //TODO: use dto
-    public Response doPost(@QueryParam("clientNameFrom") String clientNameFrom,
-                           @QueryParam("clientNameTo") String clientNameTo,
-                           @QueryParam("currency") String currency,
-                           @QueryParam("amount") Long amountMoney) {
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response doPost(TransferRequestDto transferRequestDto) {
+        String clientNameFrom = transferRequestDto.getClientNameFrom();
+        String clientNameTo = transferRequestDto.getClientNameTo();
+        String currency = transferRequestDto.getCurrency();
+        Long amountMoney = transferRequestDto.getAmountMoney();
+
         if (clientNameFrom == null || clientNameFrom.isEmpty() ||
                 clientNameTo == null || clientNameTo.isEmpty() ||
                 currency == null || currency.isEmpty() || !Currency.contains(currency) ||
@@ -58,11 +64,14 @@ public final class TransactionsController {
      * Withdraw or Top Up Account's Balance (ClientName & Currency)
      * + Parameters: Action (Transfer
      */
-    @PUT // TODO: use dto
-    public Response doPut(@QueryParam("clientName") String clientName,
-                          @QueryParam("currency") String currency,
-                          @QueryParam("action") String action,
-                          @QueryParam("amount") Long amountMoney) {
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response doPut(ExtendedAccountRequestDto extAccountRequestDto) {
+        String clientName = extAccountRequestDto.getClientName();
+        String currency = extAccountRequestDto.getCurrency();
+        String action = extAccountRequestDto.getAction();
+        Long amountMoney = extAccountRequestDto.getAmount();
+
         if (clientName == null || clientName.isEmpty() ||
                 currency == null || currency.isEmpty() || !Currency.contains(currency) ||
                 !AccountAction.containsAndNotEqualsToTransfer(action) ||

@@ -1,6 +1,8 @@
 package controllers;
 
 import com.google.gson.Gson;
+import controllers.dtos.ExtendedAccountRequestDto;
+import controllers.dtos.TransferRequestDto;
 import helpers.AccountAction;
 import helpers.Currency;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -12,6 +14,7 @@ import storage.data.Transaction;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
@@ -68,15 +71,12 @@ public class TransactionsControllerTest extends JerseyTest {
     public void shouldTransferMoneyBetweenAccountsOnPost() {
         // Given
         doNothing().when(transactionsService).transferMoneyFromTo(CLIENT_NAME, CLIENT_NAME_TO, CURRENCY, AMOUNT);
+        TransferRequestDto transferRequestDto = new TransferRequestDto(CLIENT_NAME, CLIENT_NAME_TO, CURRENCY.toString(), AMOUNT);
 
         // When
         Response response = target(TRANSFER_API_ENTRY_POINT)
-                .queryParam("clientNameFrom", CLIENT_NAME)
-                .queryParam("clientNameTo", CLIENT_NAME_TO)
-                .queryParam("currency", CURRENCY)
-                .queryParam("amount", AMOUNT)
                 .request()
-                .post(null);
+                .post(Entity.entity(transferRequestDto, MediaType.APPLICATION_JSON));
 
         // Then
         verify(transactionsService, times(1)).transferMoneyFromTo(any(String.class), any(String.class), any(Currency.class), any(Long.class));
@@ -88,15 +88,16 @@ public class TransactionsControllerTest extends JerseyTest {
     @Test
     public void shouldWithdrawCashOnPut() {
         // Given
+        ExtendedAccountRequestDto extAccountRequestDto = new ExtendedAccountRequestDto(
+                CLIENT_NAME,
+                CURRENCY.toString(),
+                AccountAction.WITHDRAW.toString(),
+                AMOUNT);
 
         // When
         Response response = target(TRANSFER_API_ENTRY_POINT)
-                .queryParam("clientName", CLIENT_NAME)
-                .queryParam("currency", CURRENCY)
-                .queryParam("action", AccountAction.WITHDRAW.toString())
-                .queryParam("amount", AMOUNT)
                 .request()
-                .put(Entity.text(""));
+                .put(Entity.entity(extAccountRequestDto, MediaType.APPLICATION_JSON));
 
         // Then
         verify(transactionsService, times(1)).withdrawCashFromAccountOfClient(any(String.class), any(Currency.class), any(Long.class));
@@ -114,15 +115,16 @@ public class TransactionsControllerTest extends JerseyTest {
     @Test
     public void shouldTopUpAmountOnPut() {
         // Given
+        ExtendedAccountRequestDto extAccountRequestDto = new ExtendedAccountRequestDto(
+                CLIENT_NAME,
+                CURRENCY.toString(),
+                AccountAction.TOP_UP.toString(),
+                AMOUNT);
 
         // When
         Response response = target(TRANSFER_API_ENTRY_POINT)
-                .queryParam("clientName", CLIENT_NAME)
-                .queryParam("currency", CURRENCY)
-                .queryParam("action", AccountAction.TOP_UP.toString())
-                .queryParam("amount", AMOUNT)
                 .request()
-                .put(Entity.text(""));
+                .put(Entity.entity(extAccountRequestDto, MediaType.APPLICATION_JSON));
 
         // Then
         verify(transactionsService, times(0)).withdrawCashFromAccountOfClient(any(String.class), any(Currency.class), any(Long.class));
@@ -140,14 +142,12 @@ public class TransactionsControllerTest extends JerseyTest {
     @Test
     public void shouldReturnBadRequestOnIncorrectPost() {
         // Given
+        TransferRequestDto transferRequestDto = new TransferRequestDto(CLIENT_NAME, CURRENCY.toString(), AMOUNT);
 
         // When
         Response response = target(TRANSFER_API_ENTRY_POINT)
-                .queryParam("clientNameFrom", CLIENT_NAME)
-                .queryParam("currency", CURRENCY)
-                .queryParam("amount", AMOUNT)
                 .request()
-                .post(null);
+                .post(Entity.entity(transferRequestDto, MediaType.APPLICATION_JSON));
 
         // Then
         verify(transactionsService, times(0)).transferMoneyFromTo(any(String.class), any(String.class), any(Currency.class), any(Long.class));
@@ -158,14 +158,12 @@ public class TransactionsControllerTest extends JerseyTest {
     @Test
     public void shouldReturnBadRequestOnIncorrectPut() {
         // Given
+        ExtendedAccountRequestDto extAccountRequestDto = new ExtendedAccountRequestDto(CLIENT_NAME, CURRENCY.toString(), AMOUNT);
 
         // When
         Response response = target(TRANSFER_API_ENTRY_POINT)
-                .queryParam("clientName", CLIENT_NAME)
-                .queryParam("currency", CURRENCY)
-                .queryParam("amount", AMOUNT)
                 .request()
-                .put(Entity.text(""));
+                .put(Entity.entity(extAccountRequestDto, MediaType.APPLICATION_JSON));
 
         // Then
         verify(transactionsService, times(0)).withdrawCashFromAccountOfClient(any(String.class), any(Currency.class), any(Long.class));

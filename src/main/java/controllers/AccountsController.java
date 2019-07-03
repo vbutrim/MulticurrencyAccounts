@@ -29,7 +29,8 @@ public final class AccountsController {
      * Get Account by Client Name and Currency
      */
     @GET
-    public Response doGet(@QueryParam("clientName") String clientName, @QueryParam("currency") String ccy) {
+    public Response doGet(@QueryParam("clientName") String clientName,
+                          @QueryParam("currency") String ccy) {
         if (clientName == null || ccy == null || clientName.isEmpty() || ccy.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -44,7 +45,8 @@ public final class AccountsController {
      * Create new Account for Client with Currency
      */
     @POST
-    public Response doPost(@QueryParam("clientName") String clientName, @QueryParam("currency") String ccy) {
+    public Response doPost(@QueryParam("clientName") String clientName,
+                           @QueryParam("currency") String ccy) {
         if (clientName == null || ccy == null || clientName.isEmpty() || ccy.isEmpty() || !Currency.contains(ccy)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

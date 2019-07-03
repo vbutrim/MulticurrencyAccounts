@@ -51,7 +51,7 @@ public final class TransactionsController {
         }
 
         this.transactionsService.transferMoneyFromTo(clientNameFrom, clientNameTo, Currency.valueOf(currency), amountMoney);
-        return Response.ok("SUCCESSFULLY TRANSFERED").build();
+        return Response.ok("SUCCESSFULLY TRANSFERRED").build();
     }
 
     /*

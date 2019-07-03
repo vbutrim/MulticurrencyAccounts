@@ -15,7 +15,6 @@ import storage.exceptions.ClientAlreadyExistsException;
 import storage.exceptions.ClientHasNonZeroBalancedAccount;
 import storage.exceptions.ClientNotFoundException;
 
-import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 

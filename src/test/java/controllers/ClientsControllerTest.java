@@ -30,6 +30,8 @@ public class ClientsControllerTest extends JerseyTest {
     private static final String PASSPORT_ID = "10aug1960";
     private static final Currency CURRENCY = Currency.RUB;
 
+    private static final String CLIENTS_API_ENTRY_POINT = "/clients";
+
     @Mock
     private ClientsService clientsService;
 
@@ -48,7 +50,7 @@ public class ClientsControllerTest extends JerseyTest {
         when(clientsService.getAllClients()).thenReturn(expectedClients);
 
         // When
-        Response response = target("/clients").request().get();
+        Response response = target(CLIENTS_API_ENTRY_POINT).request().get();
 
         // Then
         verify(clientsService, times(1)).getAllClients();
@@ -64,7 +66,8 @@ public class ClientsControllerTest extends JerseyTest {
         when(clientsService.getClientById(clientId)).thenReturn(expectedClient);
 
         // When
-        Response response = target("/clients/" + clientId).request().get();
+        Response response = target(CLIENTS_API_ENTRY_POINT + "/" + clientId)
+                .request().get();
 
         // Then
         verify(clientsService, times(1)).getClientById(any(Long.class));
@@ -80,7 +83,7 @@ public class ClientsControllerTest extends JerseyTest {
         when(clientsService.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE)).thenReturn(expectedClientId);
 
         // When
-        Response response = target("/clients")
+        Response response = target(CLIENTS_API_ENTRY_POINT)
                 .queryParam("name", CLIENT_NAME)
                 .queryParam("passportId", PASSPORT_ID)
                 .request()
@@ -105,7 +108,7 @@ public class ClientsControllerTest extends JerseyTest {
         when(clientsService.registerNewClient(CLIENT_NAME, PASSPORT_ID, CURRENCY)).thenReturn(expectedClientId);
 
         // When
-        Response response = target("/clients")
+        Response response = target(CLIENTS_API_ENTRY_POINT)
                 .queryParam("name", CLIENT_NAME)
                 .queryParam("passportId", PASSPORT_ID)
                 .queryParam("ccyOfInitialAccount", CURRENCY)
@@ -131,7 +134,7 @@ public class ClientsControllerTest extends JerseyTest {
         doNothing().when(clientsService).closeClientAndAccountsWithNoMoney(clientId);
 
         // When
-        Response response = target("/clients/" + clientId)
+        Response response = target(CLIENTS_API_ENTRY_POINT + "/" + clientId)
                 .request()
                 .delete();
 
@@ -150,7 +153,7 @@ public class ClientsControllerTest extends JerseyTest {
         // Given
 
         // When
-        Response response = target("/clients")
+        Response response = target(CLIENTS_API_ENTRY_POINT)
                 .queryParam("name", CLIENT_NAME)
                 .request()
                 .post(null);

@@ -26,6 +26,8 @@ public class AccountsControllerTest extends JerseyTest {
     private static final String CLIENT_NAME = "George Clooney";
     private static final Currency CURRENCY = Currency.RUB;
 
+    private static final String ACCOUNTS_API_ENTRY_POINT = "/accounts";
+
     @Mock
     private ClientsService clientsService;
 
@@ -44,7 +46,7 @@ public class AccountsControllerTest extends JerseyTest {
         when(clientsService.createAccountForClient(CLIENT_NAME, CURRENCY)).thenReturn(expectedAccountId);
 
         // When
-        Response response = target("/accounts")
+        Response response = target(ACCOUNTS_API_ENTRY_POINT)
                 .queryParam("clientName", CLIENT_NAME)
                 .queryParam("currency", CURRENCY)
                 .request()
@@ -69,7 +71,7 @@ public class AccountsControllerTest extends JerseyTest {
         when(clientsService.getAccountOfClient(CLIENT_NAME, CURRENCY)).thenReturn(expectedAccount);
 
         // When
-        Response response = target("/accounts")
+        Response response = target(ACCOUNTS_API_ENTRY_POINT)
                 .queryParam("clientName", CLIENT_NAME)
                 .queryParam("currency", CURRENCY)
                 .request()
@@ -87,7 +89,7 @@ public class AccountsControllerTest extends JerseyTest {
         // Given
 
         // When
-        Response response = target("/accounts")
+        Response response = target(ACCOUNTS_API_ENTRY_POINT)
                 .queryParam("clientName", CLIENT_NAME)
                 .request()
                 .get();
@@ -102,7 +104,7 @@ public class AccountsControllerTest extends JerseyTest {
         // Given
 
         // When
-        Response response = target("/accounts")
+        Response response = target(ACCOUNTS_API_ENTRY_POINT)
                 .queryParam("clientName", CLIENT_NAME)
                 .request()
                 .post(null);

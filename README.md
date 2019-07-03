@@ -4,8 +4,8 @@ RESTful API for money transfers between accounts
 
 ## Idea
 
-Bank clients don't know anything about internal mapping in storage of their private data.
-As a Client I would like to transfer some money to another Client's account. From this point of view, I know Client's name, to whom I would like to transfer, currency of transferring and its amount.
+Bank clients don't know anything about internal mapping in storage of their private data into database's ids, so transferring like (1 (acc1)) --> 2 (acc2) 45 (amount)) says nothing.
+_As a Client_ I would like to _transfer some money_ to another _Client's account_. From this point of view, I know Client's name, to whom I would like to transfer, currency of transferring and its amount.
 As an example:
 ```$xslt
    CLIENT_NAME_FROM    CLIENT_NAME_TO    CURRENCY_OF_TRANSFER    AMOUNT

@@ -18,7 +18,7 @@ public class TransactionsServiceTest {
 
     private static final String CLIENT_NAME = "Ernesto Gevara";
     private static final Currency CURRENCY = Currency.DEFAULT_VALUE;
-    private static final String CLIENT_NAME_TO = "Fidel Castro ";
+    private static final String CLIENT_NAME_TO = "Fidel Castro";
 
     @Mock
     private ClientsService clientsService;

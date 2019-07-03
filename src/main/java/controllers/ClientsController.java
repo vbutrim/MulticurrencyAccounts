@@ -56,7 +56,7 @@ public final class ClientsController {
     /*
      * Register new Client and Account for it
      */
-    @POST
+    @POST // TODO: use dto
     public Response doPost(@QueryParam("name") String name,
                            @QueryParam("passportId") String passportId,
                            @QueryParam("ccyOfInitialAccount") String ccyOfInitialAccount) {

@@ -44,7 +44,7 @@ public final class AccountsController {
     /*
      * Create new Account for Client with Currency
      */
-    @POST
+    @POST // TODO: use dto
     public Response doPost(@QueryParam("clientName") String clientName,
                            @QueryParam("currency") String ccy) {
         if (clientName == null || ccy == null || clientName.isEmpty() || ccy.isEmpty() || !Currency.contains(ccy)) {

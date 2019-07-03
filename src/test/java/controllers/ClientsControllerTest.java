@@ -9,10 +9,7 @@ import org.mockito.Mock;
 import services.ClientsService;
 import storage.data.Client;
 
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;

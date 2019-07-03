@@ -38,7 +38,7 @@ public final class TransactionsController {
      * Transfer money from Client (nameFrom) to Client (nameTo)
      * + Parameters: Currency (String), Amount of Money (Long)
      */
-    @POST
+    @POST //TODO: use dto
     public Response doPost(@QueryParam("clientNameFrom") String clientNameFrom,
                            @QueryParam("clientNameTo") String clientNameTo,
                            @QueryParam("currency") String currency,
@@ -58,7 +58,7 @@ public final class TransactionsController {
      * Withdraw or Top Up Account's Balance (ClientName & Currency)
      * + Parameters: Action (Transfer
      */
-    @PUT
+    @PUT // TODO: use dto
     public Response doPut(@QueryParam("clientName") String clientName,
                           @QueryParam("currency") String currency,
                           @QueryParam("action") String action,

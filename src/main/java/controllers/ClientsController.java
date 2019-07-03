@@ -13,7 +13,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -71,7 +70,7 @@ public final class ClientsController {
 
         long id;
 
-        if (ccyOfInitialAccount == null || ccyOfInitialAccount.isEmpty() || !Currency.contains(ccyOfInitialAccount)) {
+        if (!Currency.contains(ccyOfInitialAccount)) {
             id = clientsService.registerNewClient(name, passportId, Currency.DEFAULT_VALUE);
             ccyOfInitialAccount = Currency.DEFAULT_VALUE.toString();
         } else {

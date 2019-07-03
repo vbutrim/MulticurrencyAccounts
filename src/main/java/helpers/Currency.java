@@ -2,6 +2,8 @@ package helpers;
 
 import helpers.exceptions.IncorrectCurrencyAsArgumentException;
 
+import javax.validation.constraints.NotNull;
+
 public enum Currency {
     USD("USD"),
     EUR("EUR"),
@@ -10,6 +12,7 @@ public enum Currency {
 
     public static final Currency DEFAULT_VALUE = Currency.EUR;
 
+    @NotNull
     private final String text;
 
     Currency(String text) {

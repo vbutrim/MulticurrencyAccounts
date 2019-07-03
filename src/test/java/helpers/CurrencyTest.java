@@ -3,6 +3,7 @@ package helpers;
 import helpers.exceptions.IncorrectCurrencyAsArgumentException;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CurrencyTest {
@@ -16,6 +17,28 @@ public class CurrencyTest {
 
         // Then
         assertTrue(expectedContains);
+    }
+
+    @Test
+    public void containsShouldReturnFalseIfValueIsNull() {
+        // Given
+
+        // When
+        boolean expectedContains = Currency.contains(null);
+
+        // Then
+        assertFalse(expectedContains);
+    }
+
+    @Test
+    public void containsShouldReturnFalseIfValueIsEmpty() {
+        // Given
+
+        // When
+        boolean expectedContains = Currency.contains("");
+
+        // Then
+        assertFalse(expectedContains);
     }
 
     @Test(expected = IncorrectCurrencyAsArgumentException.class)

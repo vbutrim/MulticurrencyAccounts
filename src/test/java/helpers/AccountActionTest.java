@@ -37,4 +37,26 @@ public class AccountActionTest {
         // Then
         Assert.assertFalse(containsAndNotEqualsToTransfer);
     }
+
+    @Test
+    public void containsShouldReturnFalseIfTextIsNull() {
+        // Given
+
+        // When
+        boolean containsAndNotEqualsToTransfer = AccountAction.containsAndNotEqualsToTransfer(null);
+
+        // Then
+        Assert.assertFalse(containsAndNotEqualsToTransfer);
+    }
+
+    @Test
+    public void containsShouldReturnFalseIfTextIsEmpty() {
+        // Given
+
+        // When
+        boolean containsAndNotEqualsToTransfer = AccountAction.containsAndNotEqualsToTransfer("");
+
+        // Then
+        Assert.assertFalse(containsAndNotEqualsToTransfer);
+    }
 }

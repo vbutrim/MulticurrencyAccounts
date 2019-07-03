@@ -65,7 +65,7 @@ public final class TransactionsController {
                           @QueryParam("amount") Long amountMoney) {
         if (clientName == null || clientName.isEmpty() ||
                 currency == null || currency.isEmpty() || !Currency.contains(currency) ||
-                action == null || action.isEmpty() || !AccountAction.containsAndNotEqualsToTransfer(action) ||
+                !AccountAction.containsAndNotEqualsToTransfer(action) ||
                 amountMoney == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

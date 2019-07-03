@@ -1,6 +1,7 @@
 package controllers;
 
 import com.google.gson.Gson;
+import controllers.dtos.ClientRequestDto;
 import helpers.Currency;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -9,7 +10,9 @@ import org.mockito.Mock;
 import services.ClientsService;
 import storage.data.Client;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
@@ -81,13 +84,12 @@ public class ClientsControllerTest extends JerseyTest {
         // Given
         Long expectedClientId = 1L;
         when(clientsService.registerNewClient(CLIENT_NAME, PASSPORT_ID, Currency.DEFAULT_VALUE)).thenReturn(expectedClientId);
+        ClientRequestDto clientRequest = new ClientRequestDto(CLIENT_NAME, PASSPORT_ID);
 
         // When
         Response response = target(CLIENTS_API_ENTRY_POINT)
-                .queryParam("name", CLIENT_NAME)
-                .queryParam("passportId", PASSPORT_ID)
                 .request()
-                .post(null);
+                .post(Entity.entity(clientRequest, MediaType.APPLICATION_JSON));
 
         // Then
         verify(clientsService, times(1)).registerNewClient(any(String.class), any(String.class), any(Currency.class));
@@ -106,14 +108,12 @@ public class ClientsControllerTest extends JerseyTest {
         // Given
         Long expectedClientId = 1L;
         when(clientsService.registerNewClient(CLIENT_NAME, PASSPORT_ID, CURRENCY)).thenReturn(expectedClientId);
+        ClientRequestDto clientRequest = new ClientRequestDto(CLIENT_NAME, PASSPORT_ID, CURRENCY.toString());
 
         // When
         Response response = target(CLIENTS_API_ENTRY_POINT)
-                .queryParam("name", CLIENT_NAME)
-                .queryParam("passportId", PASSPORT_ID)
-                .queryParam("ccyOfInitialAccount", CURRENCY)
                 .request()
-                .post(null);
+                .post(Entity.entity(clientRequest, MediaType.APPLICATION_JSON));
 
         // Then
         verify(clientsService, times(1)).registerNewClient(any(String.class), any(String.class), any(Currency.class));
@@ -151,12 +151,12 @@ public class ClientsControllerTest extends JerseyTest {
     @Test
     public void shouldReturnBadRequestOnIncorrectPost() {
         // Given
+        ClientRequestDto clientRequest = new ClientRequestDto(CLIENT_NAME, null);
 
         // When
         Response response = target(CLIENTS_API_ENTRY_POINT)
-                .queryParam("name", CLIENT_NAME)
                 .request()
-                .post(null);
+                .post(Entity.entity(clientRequest, MediaType.APPLICATION_JSON));
 
         // Then
         verify(clientsService, times(0)).getAccountOfClient(any(String.class), any(Currency.class));

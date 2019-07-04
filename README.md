@@ -22,7 +22,7 @@ As a Client I can withdraw cash from my account, top up it (with ATM, e.g.) and 
 
 ## Architecture
 
-
+![Archi](https://user-images.githubusercontent.com/17473868/60666388-9a5f3500-9e6f-11e9-81cf-327db9b66f57.png)
 
 ## How to run
 
@@ -52,6 +52,8 @@ To run the server:
     GBP("GBP")
     RUB("RUB")
 ```
+
+___
 
 **Create new Client and Account with certain Currency**
 ```aidl

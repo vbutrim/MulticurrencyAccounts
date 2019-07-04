@@ -113,7 +113,7 @@ Output Stringified JSON:
 }
 ```
 
-**Close Client's accounts and remove him from database**
+**Close Client's accounts and remove him from database**  
 _**Warning**: works only if total balance of accounts is 0_
 
 ```aidl
@@ -139,7 +139,7 @@ Output String:
     "'EUR' account with id '2' for Client 'Warren Buffet' was successfully created"
 ```
 
-**Get Account's information for Client**
+**Get Account's information of Client**
 ```aidl
 GET http://localhost:PORT/api/v1/accounts?clientName=Tony&currency=EUR
 

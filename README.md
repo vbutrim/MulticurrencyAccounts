@@ -41,6 +41,10 @@ Windows-like:
 To run the server:
 ```$xslt
 > java -jar server.jar [PORT=8080]
+
+Expected ouput string on start:
+    %TIME% [main] INFO  Main - Server started: http://localhost:PORT
+    %TIME% [main] INFO  Main - Press any key to stop the service...
 ```
 
 ## API usage

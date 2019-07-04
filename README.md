@@ -137,9 +137,11 @@ Output String:
     "'EUR' account with id '2' for Client 'Warren Buffet' was successfully created"
 ```
 
-**Create new Account with certain Currency for Client**
+**Get Account's information for Client**
 ```aidl
 GET http://localhost:PORT/api/v1/accounts?clientName=Tony&currency=EUR
+
+Input params: "clientName", "currency"
 
 Output Stringified JSON:
 {
@@ -147,4 +149,68 @@ Output Stringified JSON:
     "ccy": "EUR",
     "balance": 0
 }
+```
+
+___
+
+**Withdraw cash & Top Up Balance of Client's Account**
+```aidl
+PUT http://localhost:PORT/api/v1/transfer
+
+Available Actions:
+    WITHDRAW("WITHDRAW")
+    TOP_UP("TOP_UP")
+
+
+Input ExtendedAccountRequestDto:
+{
+	"clientName": "Warren Buffet",
+	"currency": "EUR",
+	"action": "TOP_UP",
+	"amount": 100
+}
+
+Output String:
+    "'Warren Buffet's account: Successfully top up 100 EURs"
+```
+
+**Transfer money between Clients' accounts**
+```aidl
+POST http://localhost:PORT/api/v1/transfer
+
+Input TransferRequestDto:
+{
+	"clientNameFrom": "Warren Buffet",
+	"clientNameTo": "Steve Jobs",
+	"currency": "EUR",
+	"amountMoney": 10
+}
+
+Output String:
+    "SUCCESSFULLY TRANSFERRED"
+```
+
+**Get all history of successful Transactions (transfer, top up, withdraw)**
+```aidl
+GET http://localhost:PORT/api/v1/transfer
+
+Output Stringified JSON:
+[
+    {
+        "id": 1,
+        "action": "TOP_UP",
+        "clientNameFrom": "Warren Buffet",
+        "clientNameTo": "<null>",
+        "currencyOfOperation": "EUR",
+        "amount": 100
+    },
+    {
+        "id": 2,
+        "action": "TRANSFER",
+        "clientNameFrom": "Warren Buffet",
+        "clientNameTo": "Steve Jobs",
+        "currencyOfOperation": "EUR",
+        "amount": 10
+    }
+]
 ```
